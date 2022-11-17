@@ -7,28 +7,32 @@ const socket = io.connect("http://localhost:5001");
 function App() {
 
 
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState({mes: '', roomNum : '' , username : ''});
-  // const [writing, setWriting] = useState(false);
-  const [makingMessage, setMakingMessage] = useState(false);
+  const [message, setMessage] = useState({mes: '', roomNum : '' , userName : ''});
+  // const [makingMessage, setMakingMessage] = useState(false);
   const [recievedMessage, setRecievedMessage] = useState("");
 
-  console.log(makingMessage)
+
   console.log(message)
+
+
   
   const handleInput = (e) => {
     const {name, value} = e.target;
-    return setMessage({
+    // console.log(e.target.mes.value)
+    // value.length? setMessage(({...message, writing : true})) : setMessage(({...message, writing : false}))
+    setMessage({
     ...message,
-    [name] : value
+    [name] : value,
     })
+    
+    // showWriting()
+    
   };
 
-  const showWriting = () => {
-    // setMakingMessage(true)
-    socket.emit("show_writing", {message})
+  // const showWriting = () => {
+  //   socket.emit("show_writing", {message})
   
-  }
+  // }
 
   const sendMessage = () => {
     // setWriting(false)
@@ -36,19 +40,19 @@ function App() {
   };
 
   const joinRoom = () => {
-    socket.emit("join_room", message.roomNum)
+    message.roomNum? socket.emit("join_room", message.roomNum) : console.log('must give valid room name')
   };
 
   useEffect(() => {
-    socket.on("making_message", (data) => {
-      data.message.mes? setMakingMessage(true) : setMakingMessage(false)
-      setName(data.message.username)
-    })
+    // socket.on("making_message", (data) => {
+    //   data.message.mes? setMakingMessage(true) : setMakingMessage(false)
+    //   // setMakingMessage(true)
+    //   setName(data.message.username)
+    // })
 
     socket.on("recieve_message", (data) => {
       // setMakingMessage(false)
-      setRecievedMessage(data.message.mes)
-      setName(data.message.username)
+      setRecievedMessage(data.message)
     })
 
     socket.on("disconnect_message", (data) => {
@@ -56,7 +60,7 @@ function App() {
     })
 
     return () => {
-      socket.off("making_message");
+      // socket.off("making_message");
       socket.off("recieve_message");
       socket.off("disconnect_message");
     }
@@ -74,17 +78,14 @@ function App() {
       <br></br>
 
       <ChatIput 
+      socket ={socket}
       userData={message}
       handleForm={handleInput}
       handleSend={sendMessage}
+      recievedMessages={recievedMessage}
       // setIsWriting={setWriting}
-      showisWriting={showWriting}
+      // showisWriting={showWriting}
       />
-
-      <br></br>
-       <h1>{name}:{makingMessage? `${name} is writing ...`
-       : recievedMessage? recievedMessage
-       : ''} </h1> 
 
     </div>
   );
