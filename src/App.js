@@ -7,12 +7,17 @@ const socket = io.connect("http://localhost:5001");
 function App() {
 
 
-  const [message, setMessage] = useState({mes: '', roomNum : '' , userName : ''});
+  const [messageData, setMessageData] = useState({
+    mes: '', 
+    roomNum : '' , 
+    userName : '', 
+    time: `${new Date(Date.now()).getHours()} : ${new Date(Date.now()).getMinutes()} `
+  });
   // const [makingMessage, setMakingMessage] = useState(false);
   const [recievedMessage, setRecievedMessage] = useState("");
 
 
-  console.log(message)
+  console.log(messageData)
 
 
   
@@ -20,8 +25,8 @@ function App() {
     const {name, value} = e.target;
     // console.log(e.target.mes.value)
     // value.length? setMessage(({...message, writing : true})) : setMessage(({...message, writing : false}))
-    setMessage({
-    ...message,
+    setMessageData({
+    ...messageData,
     [name] : value,
     })
     
@@ -34,13 +39,16 @@ function App() {
   
   // }
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     // setWriting(false)
-    socket.emit("send_message", {message})
+    if (messageData.mes !== '') {
+
+      await socket.emit("send_message", {messageData});
+    }
   };
 
   const joinRoom = () => {
-    message.roomNum? socket.emit("join_room", message.roomNum) : console.log('must give valid room name')
+    messageData.roomNum? socket.emit("join_room", messageData.roomNum) : console.log('must give valid room name')
   };
 
   useEffect(() => {
@@ -52,7 +60,7 @@ function App() {
 
     socket.on("recieve_message", (data) => {
       // setMakingMessage(false)
-      setRecievedMessage(data.message)
+      setRecievedMessage(data.messageData)
     })
 
     socket.on("disconnect_message", (data) => {
@@ -72,14 +80,16 @@ function App() {
 
   return (
     <div className="App">
-      <input placeholder="room..." value={message.roomNum} name="roomNum" onChange={handleInput}/>
-      <button onClick={joinRoom}>join room</button>
+      <div className="container-room-input">
+        <input placeholder="room..." value={messageData.roomNum} name="roomNum" onChange={handleInput}/>
+        <button onClick={joinRoom}>join room</button>
+      </div>
 
       <br></br>
 
       <ChatIput 
       socket ={socket}
-      userData={message}
+      userData={messageData}
       handleForm={handleInput}
       handleSend={sendMessage}
       recievedMessages={recievedMessage}

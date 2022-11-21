@@ -1,4 +1,4 @@
-import {React, useState} from "react"
+import {React, useState, useEffect} from "react"
 
 export default function ChatIput (props) {
 
@@ -10,9 +10,12 @@ export default function ChatIput (props) {
     return(
         <div className="container-chat">
             <div className="chat-header">
-
+                <p>ChatApp</p>
             </div>
             <div className="chat-body">
+                
+            
+
                 <h1>{props.recievedMessages.userName}: {props.recievedMessages? props.recievedMessages.mes: ''} </h1> 
 
             </div>
