@@ -7,6 +7,17 @@ export default function ChatIput (props) {
 //     props.showisWriting();
 // }
 
+    const messagesFeed = props.messageHistory.map(obj => {
+        return <div className={obj.userName === props.userData.userName? "container-chat-content-sent" : "container-chat-content-recieved"}>
+
+                <span>{obj.time}</span>
+                <span>{obj.userName}</span>
+                <p>{obj.mes}</p>
+            </div>
+    })
+
+
+
     return(
         <div className="container-chat">
             <div className="chat-header">
@@ -14,10 +25,8 @@ export default function ChatIput (props) {
             </div>
             <div className="chat-body">
                 
-            
-
-                <h1>{props.recievedMessages.userName}: {props.recievedMessages? props.recievedMessages.mes: ''} </h1> 
-
+                {messagesFeed}
+                
             </div>
 
             <div className="chat-footer">

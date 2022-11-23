@@ -15,9 +15,7 @@ function App() {
   });
   // const [makingMessage, setMakingMessage] = useState(false);
   const [recievedMessage, setRecievedMessage] = useState("");
-
-
-  console.log(messageData)
+  const [chatHistory, setChatHistory] = useState([]);
 
 
   
@@ -43,7 +41,10 @@ function App() {
     // setWriting(false)
     if (messageData.mes !== '') {
 
-      await socket.emit("send_message", {messageData});
+      await socket.emit("send_message", messageData);
+      setChatHistory(prevHistory => [...prevHistory, messageData]);
+      setMessageData(prevMessageData => ({...prevMessageData, mes: ''}))
+
     }
   };
 
@@ -60,7 +61,9 @@ function App() {
 
     socket.on("recieve_message", (data) => {
       // setMakingMessage(false)
-      setRecievedMessage(data.messageData)
+      setRecievedMessage(data)
+      setChatHistory(prevHistory => [...prevHistory, data])
+      console.log(chatHistory, data)
     })
 
     socket.on("disconnect_message", (data) => {
@@ -93,6 +96,7 @@ function App() {
       handleForm={handleInput}
       handleSend={sendMessage}
       recievedMessages={recievedMessage}
+      messageHistory={chatHistory}
       // setIsWriting={setWriting}
       // showisWriting={showWriting}
       />

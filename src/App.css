@@ -29,3 +29,22 @@ Layout
 .chat-footer {
   border: solid 1px #454545;
 }
+
+.container-chat-content-sent  {
+  width: 80%;
+  margin-bottom: 1em;
+  border: solid 1px #454545;
+  border-radius: 5.6px;
+  background-color: aqua;
+  opacity: .4;
+}
+
+.container-chat-content-recieved {
+  width: 80%;
+  margin-bottom: 1em;
+  border: solid 1px #454545;
+  border-radius: 5.6px;
+  background-color: #778899;
+  opacity: .4;
+  color: #f5f5f5;
+}
