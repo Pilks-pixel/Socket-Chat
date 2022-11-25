@@ -18,7 +18,7 @@ function Home() {
     
       
       const handleInput = (e) => {
-        const {name, value} = e.target;
+      const {name, value} = e.target;
         setMessageData({
         ...messageData,
         time: `${new Date(Date.now()).getHours()} : ${new Date(Date.now()).getMinutes()} `,

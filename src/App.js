@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import {Home} from './pages'
+import {Home, Login, Register} from './pages'
 import './App.css';
 // import io from "socket.io-client";
 // import ChatIput from './components/ChatInput';
@@ -9,11 +9,13 @@ function App() {
 
 
   return (
-    <Routes>
-      <div className="App">
-        <Route path="/" element={<Home />} />
-      </div>
-    </Routes>
+    <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+      </Routes>
+    </div>
      
   );
 }
