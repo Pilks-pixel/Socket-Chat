@@ -1,16 +1,18 @@
 import {useState} from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../App.css';
 import './register.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { registerRoute } from '../../utils/apiRoutes';
+import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+// const axios = require('axios');
+import axios from 'axios';
 
 
 function Register() {
 
     const [user, setUser] = useState({
-        userName: "",
+        username: "",
         email: "",
         password: "",
         confirmPassword: ""
@@ -25,48 +27,83 @@ function Register() {
       
     };
 
-    const handleUserValidation = (e) => {
-        e.preventDefault()
-        if (user.password === user.confirmPassword) {
-            console.log(user)
-            toast.success('Account created!', {
-                position: "top-right",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                });
+    const goTo = useNavigate();
+
+    // Toast notification settings
+
+    const toastWarning = {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Zoom,
+        }
+
+    const toastSucess = {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Zoom,
+        }    
+    
+        const handleSubmit = async (e) => {
+            e.preventDefault(); 
             
-            // async function createUser() {
-            //     try {
-            //     //   let resp = await axios.post("", {
-            //     //     userName: user.userName,
-            //     //     email: user.email,
-            //     //     password: user.password
-            //     //   });
-            //     //   console.log(resp.data)
-            //     //   console.log(resp)
-            //     }
-            //     catch (err) {
-            //       console.error(err);
-            //     }
-            //   }
+            if (handleUserValidation()) {
+                const {username, email, password
+                } = user;
+                try {
+                    const resp = await axios.post(registerRoute, {
+                        username: username,
+                        email: email,
+                        password: password
+                    });
+                    
+                    // console.log(resp.data)
+                    if(resp.data.status === true) {
+                        toast.success('Account created!', toastSucess);
+                        localStorage.setItem("chat-app-user", JSON.stringify(resp.data.user))
+                        goTo("/")
+
+                    } else if(resp.data.status === false) {
+                       throw toast.warn(resp.data.msg, toastWarning);
+
+                    }
+
+
+                    } catch (err) {
+                        console.error(err);
+                        
+                        
+                        }
+            }
+        }
+
+        const handleUserValidation = () => {
             
+        if (user.password !== user.confirmPassword) {
+            toast.warn('passwords must match!', toastWarning);
+            return false;      
+            
+        } else if (user.username.length < 3) {
+            toast.warn('username must be at least 3 characters long', toastWarning);
+            return false;      
+            
+        } else if (user.password.length < 6) {
+            toast.warn('password must be at least 6 characters long', toastWarning);
+            return false;      
+
         } else {
-            toast.warn('passwords must match!', {
-                position: "top-right",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                });
-            
+          return true  
         }
     };
 
@@ -79,12 +116,12 @@ function Register() {
 
         <h3>register</h3>
 
-        <form onSubmit={handleUserValidation} className="container-register-form">
+        <form onSubmit={handleSubmit} className="container-register-form">
             <input 
             type="text" 
             placeholder="name" 
-            value={user.userName}
-            name="userName" 
+            value={user.username}
+            name="username" 
             onChange={handleRegisterInput}
             />
 

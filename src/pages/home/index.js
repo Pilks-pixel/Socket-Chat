@@ -2,7 +2,7 @@ import {useState, useEffect}  from 'react';
 import '../../App.css';
 import ChatIput from '../../components/ChatInput';
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:5001");
+const socket = io.connect("http://localhost:5000");
 
 
 function Home() {
