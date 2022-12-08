@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import '../../App.css';
 import '../register/register.css';
@@ -13,9 +13,7 @@ function Login() {
 
     const [user, setUser] = useState({
         username: "",
-        email: "",
         password: "",
-        confirmPassword: ""
     });
     
     const handleRegisterInput = (e) => {
@@ -54,60 +52,54 @@ function Login() {
         theme: "light",
         transition: Zoom,
         }    
-    
-        const handleSubmit = async (e) => {
-            e.preventDefault(); 
+
+    // Keeping loged in users on chat
+    useEffect(() => {
+      if (localStorage.getItem("chat-app-user")) {
+        goTo('/')
+      }
+    },[])
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault(); 
             
-                const {username, email, password
-                } = user;
-                try {
-                    const resp = await axios.post(loginRoute, {
-                        username: username,
-                        email: email,
-                        password: password
-                    });
+        if (handleUserValidation()) {
+            const {username, password
+            } = user;
+            try {
+                const resp = await axios.post(loginRoute, {
+                    username: username,
+                    password: password
+                });
                     
-                    // console.log(resp.data)
-                    if(resp.data.status === true) {
-                        toast.success('Login successful!', toastSucess);
-                        localStorage.setItem("chat-app-user", JSON.stringify(resp.data.user))
-                        goTo("/")
+                console.log(resp.data)
+                if(resp.data.status === true) {
+                    toast.success('Login Sucessful', toastSucess);
+                    localStorage.setItem("chat-app-user", JSON.stringify(resp.data.user))
+                    goTo("/")
 
-                    } else if(resp.data.status === false) {
-                       throw toast.warn(resp.data.msg, toastWarning);
+                } else if(resp.data.status === false) {
+                    throw toast.warn(resp.data.msg, toastWarning);
+                }
 
+            } catch (err) {
+                console.error(err);
                     }
-
-
-                    } catch (err) {
-                        console.error(err);
-                        
-                        
-                        }
         }
+    }
 
-    //     const handleUserValidation = () => {
+    const handleUserValidation = () => {
+      if (user.password === '' || user.username === '') {
+        toast.warn('must enter valid input', toastWarning);
+        return false;      
             
-    //     if (user.password !== user.confirmPassword) {
-    //         toast.warn('passwords must match!', toastWarning);
-    //         return false;      
-            
-    //     } else if (user.username.length < 3) {
-    //         toast.warn('username must be at least 3 characters long', toastWarning);
-    //         return false;      
-            
-    //     } else if (user.password.length < 6) {
-    //         toast.warn('password must be at least 6 characters long', toastWarning);
-    //         return false;      
-
-    //     } else {
-    //       return true  
-    //     }
-    // };
+      } else {
+          return true  
+        }
+    };
 
       
-
-
   return (
     <div className="container-register">
         
@@ -124,14 +116,6 @@ function Login() {
             />
 
             <input 
-            type="email" 
-            placeholder="email" 
-            value={user.email}
-            name="email" 
-            onChange={handleRegisterInput}
-            />
-
-            <input 
             type="password" 
             placeholder="password" 
             value={user.password} 
@@ -141,6 +125,7 @@ function Login() {
 
             <input type="submit" value="Login"/>
         </form>
+
 
 
       <span>Don't have an account?</span>

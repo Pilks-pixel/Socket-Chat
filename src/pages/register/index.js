@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import '../../App.css';
 import './register.css';
@@ -54,6 +54,14 @@ function Register() {
         theme: "light",
         transition: Zoom,
         }    
+
+    // Keeping loged in users on chat
+    useEffect(() => {
+        if (localStorage.getItem("chat-app-user")) {
+        goTo('/')
+        }
+    },[])
+
     
         const handleSubmit = async (e) => {
             e.preventDefault(); 
