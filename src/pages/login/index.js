@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 
-function Login() {
+function Login(props) {
 
     const [user, setUser] = useState({
         username: "",
@@ -53,12 +53,14 @@ function Login() {
         transition: Zoom,
         }    
 
-    // Keeping loged in users on chat
-    useEffect(() => {
-      if (localStorage.getItem("chat-app-user")) {
-        goTo('/')
-      }
-    },[])
+    //Keeping loged in users on chat
+    // useEffect(() => {
+    //   if (localStorage.getItem("jwtToken")) {
+    //     props.setLoggedIn(true);
+
+    //     // goTo('/')
+    //   }
+    // },[])
 
 
     const handleSubmit = async (e) => {
@@ -74,12 +76,14 @@ function Login() {
                 });
                     
                 console.log(resp.data)
-                if(resp.data.status === true) {
+                if(resp.data.status === true && resp.data.accessToken) {
                     toast.success('Login Sucessful', toastSucess);
-                    localStorage.setItem("chat-app-user", JSON.stringify(resp.data.user))
-                    goTo("/")
+                    localStorage.setItem('jwtToken', resp.data.accessToken)
+                    axios.defaults.headers.common['Authorization'] = 'Bearer' + resp.data.accessToken
+                    // goTo("/")
 
                 } else if(resp.data.status === false) {
+
                     throw toast.warn(resp.data.msg, toastWarning);
                 }
 

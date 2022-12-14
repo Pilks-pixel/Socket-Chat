@@ -56,11 +56,11 @@ function Register() {
         }    
 
     // Keeping loged in users on chat
-    useEffect(() => {
-        if (localStorage.getItem("chat-app-user")) {
-        goTo('/')
-        }
-    },[])
+    // useEffect(() => {
+    //     if (localStorage.getItem("chat-app-user")) {
+    //     goTo('/')
+    //     }
+    // },[])
 
     
         const handleSubmit = async (e) => {

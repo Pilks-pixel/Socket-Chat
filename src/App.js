@@ -4,16 +4,23 @@ import './App.css';
 // import io from "socket.io-client";
 // import ChatIput from './components/ChatInput';
 // const socket = io.connect("http://localhost:5001");
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoutes from './components/PublicRoutes';
 
 function App() {
+  
 
 
   return (
     <div className="App">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/" element={<Home />} />
+          </Route>
+          <Route element={<PublicRoutes/>}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
       </Routes>
     </div>
      
