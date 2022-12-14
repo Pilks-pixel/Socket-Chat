@@ -75,12 +75,12 @@ function Login(props) {
                     password: password
                 });
                     
-                console.log(resp.data)
+                // console.log(resp.data)
                 if(resp.data.status === true && resp.data.accessToken) {
                     toast.success('Login Sucessful', toastSucess);
-                    localStorage.setItem('jwtToken', resp.data.accessToken)
+                    localStorage.setItem('jwtToken', JSON.stringify(resp.data))
                     axios.defaults.headers.common['Authorization'] = 'Bearer' + resp.data.accessToken
-                    // goTo("/")
+                    goTo("/")
 
                 } else if(resp.data.status === false) {
 

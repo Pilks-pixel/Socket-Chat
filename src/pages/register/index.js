@@ -79,7 +79,7 @@ function Register() {
                     // console.log(resp.data)
                     if(resp.data.status === true) {
                         toast.success('Account created!', toastSucess);
-                        localStorage.setItem("chat-app-user", JSON.stringify(resp.data.user))
+                        localStorage.setItem("jwtToken", JSON.stringify(resp.data))
                         goTo("/")
 
                     } else if(resp.data.status === false) {
@@ -90,7 +90,6 @@ function Register() {
 
                     } catch (err) {
                         console.error(err);
-                        
                         
                         }
             }
