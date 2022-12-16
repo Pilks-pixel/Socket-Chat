@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import {Home, Login, Register} from './pages'
+import {Home, Login, Register, SetAvatar} from './pages'
 import './App.css';
 // import io from "socket.io-client";
 // import ChatIput from './components/ChatInput';
@@ -16,6 +16,7 @@ function App() {
         <Routes>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
+            <Route path="/avatar" element={<SetAvatar />} />
           </Route>
           <Route element={<PublicRoutes/>}>
             <Route path="/login" element={<Login />} />

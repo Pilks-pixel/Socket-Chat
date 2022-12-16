@@ -4,6 +4,7 @@
 
 }
 
+.container,
 .container-register-form {
     border: solid 2px black;
     margin: 0 auto;
@@ -15,4 +16,22 @@
     align-items: center;
     gap: 1em;
 
+}
+
+/* Avatar page */
+
+.container-avatars {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.avatar {
+    height: 5rem;
+    border: solid 2px blue;
+}
+
+.selected-avatar {
+    height: 5rem;
+    border: solid 2px blue; 
+    background: pink;
 }

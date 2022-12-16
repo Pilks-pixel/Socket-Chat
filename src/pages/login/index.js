@@ -5,7 +5,6 @@ import '../register/register.css';
 import { loginRoute } from '../../utils/apiRoutes';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// const axios = require('axios');
 import axios from 'axios';
 
 
@@ -28,7 +27,6 @@ function Login(props) {
     const goTo = useNavigate();
 
     // Toast notification settings
-
     const toastWarning = {
         position: "top-right",
         autoClose: 4000,
@@ -62,7 +60,8 @@ function Login(props) {
     //   }
     // },[])
 
-
+    
+    // Form submission & validation
     const handleSubmit = async (e) => {
         e.preventDefault(); 
             
