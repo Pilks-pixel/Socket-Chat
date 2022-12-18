@@ -13,6 +13,7 @@ function SetAvatar() {
     const avatarUrlMale = "https://avatars.dicebear.com/api/pixel-art/male/:1.svg";
     const [avatars, setAvatars] = useState([]);
     const [selectedAvatar, setSelectedAvatar] = useState('');
+    const [currentUser, setCurrentUser] = useState();
 
 
     function randomInt() {
@@ -20,8 +21,27 @@ function SetAvatar() {
     }
 
     const handleClick = e => {   
-        setSelectedAvatar(e.target);
-        console.log(selectedAvatar.src, e.target)
+        setSelectedAvatar(e.target.src);
+        console.log(selectedAvatar, e.target)
+    }
+
+    const handleSetNewAvatar = async () => {
+        setCurrentUser(JSON.parse(localStorage.getItem("jwtToken")));
+        const {user} = currentUser
+        console.log(user._id, currentUser)
+        try {
+            const res = await axios.put(setAvatarRoute, {
+                avatar : selectedAvatar,
+                id : user._id
+                
+                })
+            
+            if(res.data.status === true) {
+                console.log(res.data)
+            }
+        } catch (error) {
+            console.log(error)
+        } 
     }
 
     useEffect(() => {
@@ -29,7 +49,7 @@ function SetAvatar() {
         for(let i = 0; i < 4; i++) {
 
             let createAvatar = () => { 
-            let seed = `${avatarUrlFemale}:${randomInt()}.svg`
+                let seed = `${avatarUrlFemale}:${randomInt()}.svg`
                 if (!avatarOptions.includes(seed) ) {
                     return avatarOptions.push(seed)
                 } else {
@@ -47,7 +67,7 @@ function SetAvatar() {
     },[]);
 
     const showAvatars = avatars.map((a, i) => {
-        return <img key={i} className={selectedAvatar.src === a? "selected-avatar" : "avatar" } src={a} alt="user avatar option" onClick={handleClick}/>
+        return <img key={i} className={selectedAvatar === a? "selected-avatar" : "avatar" } src={a} alt="user avatar option" onClick={handleClick}/>
     })
 
   return (
@@ -57,7 +77,7 @@ function SetAvatar() {
         <div className="container-avatars">
             {showAvatars}
         </div>
-        <button>Set Avatar</button>
+        <button onClick={handleSetNewAvatar}>Set Avatar</button>
     </div>
   )
 }
