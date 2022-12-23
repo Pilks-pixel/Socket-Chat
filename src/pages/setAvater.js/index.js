@@ -10,10 +10,10 @@ import axios from 'axios';
 
 function SetAvatar() {
     const avatarUrlFemale = "https://avatars.dicebear.com/api/pixel-art/female/";
-    const avatarUrlMale = "https://avatars.dicebear.com/api/pixel-art/male/:1.svg";
+    const [newAvatar, setNewAvatar] = useState(false)
     const [avatars, setAvatars] = useState([]);
     const [selectedAvatar, setSelectedAvatar] = useState('');
-    const [currentUser, setCurrentUser] = useState();
+    const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("jwtToken")))
 
 
     function randomInt() {
@@ -25,11 +25,15 @@ function SetAvatar() {
         console.log(selectedAvatar, e.target)
     }
 
+    const handleNewAvatars = e => {
+        setNewAvatar(prevAvatars => !prevAvatars)
+        setSelectedAvatar('')
+    }
+
     const handleSetNewAvatar = async () => {
-        setCurrentUser(JSON.parse(localStorage.getItem("jwtToken")));
-        const {user} = currentUser
-        console.log(user._id, currentUser)
         try {
+            const {user} = currentUser
+            console.log(user._id, currentUser)
             const res = await axios.put(setAvatarRoute, {
                 avatar : selectedAvatar,
                 id : user._id
@@ -64,7 +68,7 @@ function SetAvatar() {
          setAvatars(avatarOptions)
 
 
-    },[]);
+    },[newAvatar]);
 
     const showAvatars = avatars.map((a, i) => {
         return <img key={i} className={selectedAvatar === a? "selected-avatar" : "avatar" } src={a} alt="user avatar option" onClick={handleClick}/>
@@ -74,6 +78,7 @@ function SetAvatar() {
     <div className='container'>
         <h3>Avatars</h3>
         <p>Choose an avatar</p>
+        <button onClick={handleNewAvatars}>More Avatars</button>
         <div className="container-avatars">
             {showAvatars}
         </div>
