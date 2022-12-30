@@ -18,20 +18,3 @@
 
 }
 
-/* Avatar page */
-
-.container-avatars {
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.avatar {
-    height: 5rem;
-    border: solid 2px blue;
-}
-
-.selected-avatar {
-    height: 5rem;
-    border: solid 2px blue; 
-    background: pink;
-}

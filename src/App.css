@@ -48,3 +48,61 @@ Layout
   opacity: .4;
   color: #f5f5f5;
 }
+
+/* Avatar page */
+
+.container-avatars {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.avatar {
+  height: 5rem;
+  border: solid 2px blue;
+}
+
+.selected-avatar {
+  height: 5rem;
+  border: solid 2px blue; 
+  background: pink;
+}
+
+.container-contacts {
+  margin: auto;
+  width: 80%;
+  height: 4rem;
+  padding: 1rem;
+  border:black 1px solid;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: auto;
+}
+
+.container-contact-item, .container-contact-item-selected {
+  opacity: 0.5;
+  border-radius: 2.6px;
+  cursor: pointer;
+  /* min-height: 1rem; */
+}
+
+.container-contact-current-user {
+  border-radius: 2.6px;
+  background-color: slategrey;
+  color: #f5f5f5;
+}
+
+.container-contact-item {
+  background: #d3d3d3;
+}
+
+.container-contact-item-selected {
+  background: skyblue;
+}
+
+
+.container-contacts .avatar{
+  height: 3rem;
+  border-radius: 50%;
+}
+

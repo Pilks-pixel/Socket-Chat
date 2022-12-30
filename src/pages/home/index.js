@@ -3,8 +3,9 @@ import '../../App.css';
 import ChatIput from '../../components/ChatInput';
 import { SignOut } from '../../components/SignOut';
 import Contacts from '../../components/Contacts';
+import Welcome from '../../components/Welcome';
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect(undefined);
 
 
 function Home() {
@@ -17,6 +18,8 @@ function Home() {
       const [chatHistory, setChatHistory] = useState([]);
       const [activeUser, setActiveUser] = useState([]);
       const [room, setRoom] = useState([]);
+      const [currentUserToken, setCurrentUserToken] = useState(JSON.parse(localStorage.getItem('jwtToken')));
+      const [selectedContact, setSelectedContact] = useState('');
     
       
       const handleInput = (e) => {
@@ -38,7 +41,13 @@ function Home() {
     
         }
       };
-    
+
+      const handleChatChange = (contact) => {
+        setSelectedContact(contact)
+        // console.log(contact)
+    };
+
+       // Socket functionality 
       const joinRoom = () => { 
     
         messageData.roomNum && room.some(rooms => rooms === messageData.roomNum) === false?
@@ -93,6 +102,7 @@ function Home() {
             {activeUser.length > 0? <p>{activeUser[activeUser.length - 1]} has joined</p> : <p></p>}
         </div>
 
+        {selectedContact? 
         <ChatIput 
         socket ={socket}
         userData={messageData}
@@ -100,11 +110,18 @@ function Home() {
         handleSend={sendMessage}
         messageHistory={chatHistory}
         users={activeUser}
-        />
+        /> :
 
+        <Welcome  currentUser={currentUserToken} />
+        }
+        
         <SignOut />
 
-        <Contacts />
+        <Contacts 
+        showContact={handleChatChange} 
+        contact={selectedContact}
+        currentUser={currentUserToken}
+        />
 
     </div>
   )
