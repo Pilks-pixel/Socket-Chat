@@ -4,6 +4,8 @@ import ChatIput from '../../components/ChatInput';
 import { SignOut } from '../../components/SignOut';
 import Contacts from '../../components/Contacts';
 import Welcome from '../../components/Welcome';
+import axios from 'axios';
+import { messageRoute, allMessagesRoute } from '../../utils/apiRoutes';
 import io from "socket.io-client";
 const socket = io.connect(undefined);
 
@@ -16,8 +18,8 @@ function Home() {
         time : ''
       });
       const [chatHistory, setChatHistory] = useState([]);
-      const [activeUser, setActiveUser] = useState([]);
-      const [room, setRoom] = useState([]);
+      // const [activeUser, setActiveUser] = useState([]);
+      // const [room, setRoom] = useState([]);
       const [currentUserToken, setCurrentUserToken] = useState(JSON.parse(localStorage.getItem('jwtToken')));
       const [selectedContact, setSelectedContact] = useState('');
     
@@ -35,41 +37,66 @@ function Home() {
       const sendMessage = async () => {
         if (messageData.mes !== '') {
     
-          await socket.emit("send_message", messageData);
-          setChatHistory(prevHistory => [...prevHistory, messageData]);
+          // await socket.emit("send_message", messageData);
+          // setChatHistory(prevHistory => [...prevHistory, messageData]
           setMessageData(prevMessageData => ({...prevMessageData, mes: ''}))
-    
+          const res = await axios.post(messageRoute, {
+            from: currentUserToken.user._id,
+            to: selectedContact._id,
+            message: messageData.mes,
+            timeStamp: messageData.time
+          
+          })
+          // console.log(res.data);
+          // console.log(messageData);
+          // console.log(chatHistory);
+          
         }
       };
 
       const handleChatChange = (contact) => {
         setSelectedContact(contact)
-        // console.log(contact)
+        console.log(contact)
     };
 
+    useEffect( () => {
+
+      async function getMessageHistory() {
+        const res = await axios.post(allMessagesRoute, {
+          from: currentUserToken.user._id,
+          to: selectedContact._id,
+        })
+
+        setChatHistory(res.data);
+
+      } 
+
+      getMessageHistory();
+    },[selectedContact])
+    
+
        // Socket functionality 
-      const joinRoom = () => { 
+      // const joinRoom = () => { 
     
-        messageData.roomNum && room.some(rooms => rooms === messageData.roomNum) === false?
-        socket.emit("join_room", messageData) :
-        console.log('must give a valid and unique room name')
+      //   messageData.roomNum && room.some(rooms => rooms === messageData.roomNum) === false?
+      //   socket.emit("join_room", messageData) :
+      //   console.log('must give a valid and unique room name')
     
-        setRoom(prevRoom => [...prevRoom, messageData.room])
+      //   setRoom(prevRoom => [...prevRoom, messageData.room])
     
-      };
+      // };
 
       useEffect(() => {
 
-        socket.on("user_join_message", (data) => {
-          setActiveUser(prevUsers => [...prevUsers, data.userName])
-          console.log(activeUser, data)
+        // socket.on("user_join_message", (data) => {
+        //   setActiveUser(prevUsers => [...prevUsers, data.userName])
+        //   console.log(activeUser, data)
     
-        })
+        // })
         
         socket.on("recieve_message", (data) => {
           setChatHistory(prevHistory => [...prevHistory, data])
-          setActiveUser(prevUsers => [...prevUsers, data.userName])
-    
+          // setActiveUser(prevUsers => [...prevUsers, data.userName])
     
         })
     
@@ -90,16 +117,16 @@ function Home() {
   return (
     <div className="home">
 
-        <div className="container-room-input">
+        {/* <div className="container-room-input">
             <input placeholder="name..." value={messageData.userName} name="userName" onChange={handleInput}/>
             <input placeholder="room..." value={messageData.roomNum} name="roomNum" onChange={handleInput}/>
             <button onClick={joinRoom}>join room</button>
-        </div>
+        </div> */}
 
         <br></br>
         <div>
             
-            {activeUser.length > 0? <p>{activeUser[activeUser.length - 1]} has joined</p> : <p></p>}
+            {/* {activeUser.length > 0? <p>{activeUser[activeUser.length - 1]} has joined</p> : <p></p>} */}
         </div>
 
         {selectedContact? 
@@ -109,7 +136,10 @@ function Home() {
         handleForm={handleInput}
         handleSend={sendMessage}
         messageHistory={chatHistory}
-        users={activeUser}
+        // users={activeUser}
+        contact={selectedContact}
+        currentUser={currentUserToken}
+
         /> :
 
         <Welcome  currentUser={currentUserToken} />

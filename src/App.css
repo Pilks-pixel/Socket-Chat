@@ -30,6 +30,12 @@ Layout
   border: solid 1px #454545;
 }
 
+.chat-body {
+  overflow: auto;
+  height: 300px;
+
+}
+
 .container-chat-content-sent  {
   width: 80%;
   margin-bottom: 1em;
@@ -70,7 +76,7 @@ Layout
 .container-contacts {
   margin: auto;
   width: 80%;
-  height: 4rem;
+  height: 250px;
   padding: 1rem;
   border:black 1px solid;
   display: flex;

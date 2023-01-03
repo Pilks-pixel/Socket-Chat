@@ -1,26 +1,44 @@
 import {React, useState, useEffect} from "react"
+import { Socket } from "socket.io-client";
 
 export default function ChatIput (props) {
 
-    
-    const messagesFeed = props.messageHistory.map((obj) => {
-        return <div className={obj.userName === props.userData.userName? "container-chat-content-sent" : "container-chat-content-recieved"} >
+    const {username, avatarImage, isAvatarImageSet} = props.contact;
+    const [messagesLoaded, setMessagesLoaded] = useState(false);
 
-                <span>{obj.time}</span>
-                <span>{obj.userName}</span>
-                <p>{obj.mes}</p>
-            </div>
-    })
+    
+
+
+        const messagesFeed = props.messageHistory.map((obj, index) => {
+                return <div className={obj.fromSender? "container-chat-content-sent" : "container-chat-content-recieved"} key={index} >
+        
+                        <span>{obj.timeStamp}</span>
+                        <p>{obj.message}</p>
+                    </div>
+            })
+    
+
+    useEffect(() => {
+
+
+        
+        messagesFeed.length? setMessagesLoaded(true) : setMessagesLoaded(false);
+        console.log(props.messageHistory)
+
+
+    },[messagesFeed])        
     
     return(
         <div className="container-chat">
             <div className="chat-header">
                 <p> Room : {props.userData.roomNum}</p>
-                <p>Users</p>
+                <h3>{username}</h3>
+                {isAvatarImageSet && <img className='avatar' src={avatarImage} alt='avatar' />}
+
             </div>
             <div className="chat-body">
                 
-                {messagesFeed}
+                {messagesLoaded? messagesFeed : <h2>Let's chat!</h2>}
                                
             </div>
 
