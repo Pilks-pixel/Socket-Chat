@@ -21,9 +21,14 @@ function Home() {
   // messageData handler functions
   const handleInput = (e) => {
     const { name, value } = e.target;
+    const date = new Date()
+    let minutes = date.getMinutes()
+    if (minutes < 10) {
+      minutes = minutes.padStart(2, 0)
+    }
     setMessageData({
       ...messageData,
-      time: `${new Date(Date.now()).getHours()} : ${new Date(Date.now()).getMinutes()} `,
+      time: `${date.getHours()} : ${minutes} `,
       [name]: value,
     })
 

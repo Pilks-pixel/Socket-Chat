@@ -1,12 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import {Home, Login, Register, SetAvatar} from './pages'
-import './App.css';
-// import io from "socket.io-client";
-// import ChatIput from './components/ChatInput';
-// const socket = io.connect("http://localhost:5001");
-// import PrivateRoute from './components/PrivateRoute';
-// import PublicRoutes from './components/PublicRoutes';
 import {PrivateRoute, PublicRoutes} from './components'
+import './App.css';
 
 function App() {
   

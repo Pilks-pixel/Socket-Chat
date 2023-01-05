@@ -8,7 +8,6 @@ export default function ChatInput(props) {
 
 
 
-
     const messagesFeed = props.messageHistory.map((obj, index) => {
         return <div className={
             obj.fromSender ?
