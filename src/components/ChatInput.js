@@ -1,5 +1,4 @@
 import {React, useState, useEffect} from "react"
-import { Socket } from "socket.io-client";
 
 export default function ChatIput (props) {
 
@@ -9,22 +8,18 @@ export default function ChatIput (props) {
     
 
 
-        const messagesFeed = props.messageHistory.map((obj, index) => {
-                return <div className={obj.fromSender? "container-chat-content-sent" : "container-chat-content-recieved"} key={index} >
+    const messagesFeed = props.messageHistory.map((obj, index) => {
+            return <div className={obj.fromSender? "container-chat-content-sent" : "container-chat-content-recieved"} key={index} >
         
-                        <span>{obj.timeStamp}</span>
-                        <p>{obj.message}</p>
-                    </div>
+                    <span>{obj.timeStamp}</span>
+                    <p>{obj.message}</p>
+                </div>
             })
     
 
     useEffect(() => {
 
-
-        
         messagesFeed.length? setMessagesLoaded(true) : setMessagesLoaded(false);
-        console.log(props.messageHistory)
-
 
     },[messagesFeed])        
     
@@ -36,7 +31,7 @@ export default function ChatIput (props) {
                 {isAvatarImageSet && <img className='avatar' src={avatarImage} alt='avatar' />}
 
             </div>
-            <div className="chat-body">
+            <div className="chat-body" >
                 
                 {messagesLoaded? messagesFeed : <h2>Let's chat!</h2>}
                                
