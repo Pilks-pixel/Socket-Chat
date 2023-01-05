@@ -4,8 +4,9 @@ import './App.css';
 // import io from "socket.io-client";
 // import ChatIput from './components/ChatInput';
 // const socket = io.connect("http://localhost:5001");
-import PrivateRoute from './components/PrivateRoute';
-import PublicRoutes from './components/PublicRoutes';
+// import PrivateRoute from './components/PrivateRoute';
+// import PublicRoutes from './components/PublicRoutes';
+import {PrivateRoute, PublicRoutes} from './components'
 
 function App() {
   

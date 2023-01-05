@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../../App.css';
-import ChatIput from '../../components/ChatInput';
-import { SignOut } from '../../components/SignOut';
-import Contacts from '../../components/Contacts';
-import Welcome from '../../components/Welcome';
 import axios from 'axios';
+import {ChatInput, SignOut, Contacts, Welcome} from '../../components';
 import { messageRoute, allMessagesRoute } from '../../utils/apiRoutes';
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:5000");
@@ -115,7 +112,7 @@ function Home() {
     <div className="home">
 
       {selectedContact ?
-        <ChatIput
+        <ChatInput
           socket={socket}
           userData={messageData}
           handleForm={handleInput}
@@ -129,7 +126,10 @@ function Home() {
         <Welcome currentUser={currentUserToken} />
       }
 
-      <SignOut />
+      <SignOut 
+      socket={socket}
+      currentUser={currentUserToken}
+      />
 
       <Contacts
         showContact={handleChatChange}

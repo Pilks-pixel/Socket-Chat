@@ -1,6 +1,6 @@
 import { React, useState, useEffect, useRef } from "react"
 
-export default function ChatIput(props) {
+export default function ChatInput(props) {
 
     const { username, avatarImage, isAvatarImageSet } = props.contact;
     const [messagesLoaded, setMessagesLoaded] = useState(false);
