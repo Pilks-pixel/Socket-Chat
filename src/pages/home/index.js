@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import '../../App.css';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import {ChatInput, SignOut, Contacts, Welcome} from '../../components';
 import { messageRoute, allMessagesRoute } from '../../utils/apiRoutes';
+import axios from 'axios';
+import '../../App.css';
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:5000");
 
@@ -135,6 +136,12 @@ function Home() {
       socket={socket}
       currentUser={currentUserToken}
       />
+
+      <div>
+        <span>Go to </span>
+        <Link to='/avatar'>Profile</Link>
+      </div>
+
 
       <Contacts
         showContact={handleChatChange}

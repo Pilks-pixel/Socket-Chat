@@ -14,7 +14,7 @@ function Contacts(props) {
             const {user, accessToken} = props.currentUser
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
             const res = await axios.get(`${contactsRoute}/${user._id}`)
-            console.log(res.data)
+            // console.log(res.data)
             setContactData(res.data)
 
         }

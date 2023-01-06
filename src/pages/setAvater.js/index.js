@@ -60,26 +60,36 @@ function SetAvatar() {
     }
 
     const handleSetNewAvatar = async () => {
+        class noAvatarErr extends Error {}
         try {
-            if (selectedAvatar === '') throw new Error('no avatar selected') 
-            const {user, accessToken} = currentUser
+            if (selectedAvatar === '') throw new noAvatarErr('no avatar selected') 
+            const {user, accessToken} = currentUser;
             // console.log(user._id, currentUser)
-            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
             const res = await axios.put(`${setAvatarRoute}/${user._id}`, {
                 avatar : selectedAvatar
-                })
+                });
             
             if(res.data.status === true) {
                 // console.log(res.data)
-                const {msg, status, user} = res.data
+                const {msg, status, user} = res.data;
                 toast.success('Avatar Updated', toastSucess);
                 setCurrentUser({...currentUser, msg : msg , status: status, user: user});
-                localStorage.setItem('jwtToken', JSON.stringify({accessToken: accessToken, msg : msg , status: status, user: user}))
+                localStorage.setItem(
+                    'jwtToken',
+                     JSON.stringify({accessToken: accessToken, msg : msg , status: status, user: user})
+                     )
 
             }
         } catch (err) {
-            console.log(err.message)
-            toast.warning('Please select an avatar', toastWarning)
+            if (err instanceof noAvatarErr) {
+                toast.warning('Please select an avatar', toastWarning);
+                console.log(err.message);
+
+            } else {
+                toast.warning(err.message, toastWarning);
+                console.log(err.message);
+            }
         } 
     };
 
@@ -93,7 +103,7 @@ function SetAvatar() {
             let createAvatar = () => { 
                 let seed = `${avatarUrl}:${randomInt()}.svg`
                 if (!avatarOptions.includes(seed) ) {
-                    return avatarOptions.push(seed)
+                    return avatarOptions.push(seed);
                 } else {
                     createAvatar();
                 }
@@ -109,7 +119,12 @@ function SetAvatar() {
     },[newAvatar]);
 
     const showAvatars = avatars.map((a, i) => {
-        return <img key={i} className={selectedAvatar === a? "selected-avatar" : "avatar" } src={a} alt="user avatar option" onClick={handleClick}/>
+        return <img 
+        key={i} 
+        className={selectedAvatar === a? "selected-avatar" : "avatar" } 
+        src={a} alt="user avatar option" 
+        onClick={handleClick}
+        />
     })
 
   return (
