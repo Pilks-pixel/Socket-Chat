@@ -24,7 +24,10 @@ function Contacts(props) {
     
     let showAllContacts = contactData.map((contact, index) => {
     return <div 
-    className={props.contact._id === contact._id? 'container-contact-item-selected' : 'container-contact-item'} 
+    className={
+        props.contact._id === contact._id? 'container-contact-item-selected' :
+          'container-contact-item'
+        } 
     key={index} 
     onClick={() => props.showContact(contact)} 
     id={contact._id}
