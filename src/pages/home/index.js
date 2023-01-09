@@ -26,7 +26,8 @@ function Home() {
     const date = new Date()
     let minutes = date.getMinutes()
     if (minutes < 10) {
-      minutes = minutes.padStart(2, 0)
+      minutes = minutes.toString().padStart(2, 0);
+      return +minutes;
     }
     setMessageData({
       ...messageData,
