@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import '../../App.css';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import {ChatInput, SignOut, Contacts, Welcome} from '../../components';
 import { messageRoute, allMessagesRoute } from '../../utils/apiRoutes';
+import axios from 'axios';
+import '../../App.css';
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:5000");
+// const socket = io.connect("http://localhost:5000");
+const socket = io.connect("https://socket-chat-node.onrender.com");
 
 
 function Home() {
@@ -21,9 +23,14 @@ function Home() {
   // messageData handler functions
   const handleInput = (e) => {
     const { name, value } = e.target;
+    const date = new Date()
+    let minutes = date.getMinutes()
+    if (minutes < 10) {
+      minutes = minutes.padStart(2, 0)
+    }
     setMessageData({
       ...messageData,
-      time: `${new Date(Date.now()).getHours()} : ${new Date(Date.now()).getMinutes()} `,
+      time: `${date.getHours()} : ${minutes} `,
       [name]: value,
     })
 
@@ -130,6 +137,12 @@ function Home() {
       socket={socket}
       currentUser={currentUserToken}
       />
+
+      <div>
+        <span>Go to </span>
+        <Link to='/avatar'>Profile</Link>
+      </div>
+
 
       <Contacts
         showContact={handleChatChange}

@@ -1,4 +1,5 @@
-const host = 'http://localhost:5000';
+// const host = 'http://localhost:5000';
+const host = 'https://socket-chat-node.onrender.com';
 
 // Auth Routes
 const registerRoute = `${host}/api/auth/register`;

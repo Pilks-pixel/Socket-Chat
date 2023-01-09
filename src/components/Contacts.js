@@ -14,7 +14,7 @@ function Contacts(props) {
             const {user, accessToken} = props.currentUser
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
             const res = await axios.get(`${contactsRoute}/${user._id}`)
-            console.log(res.data)
+            // console.log(res.data)
             setContactData(res.data)
 
         }
@@ -24,7 +24,10 @@ function Contacts(props) {
     
     let showAllContacts = contactData.map((contact, index) => {
     return <div 
-    className={props.contact._id === contact._id? 'container-contact-item-selected' : 'container-contact-item'} 
+    className={
+        props.contact._id === contact._id? 'container-contact-item-selected' :
+          'container-contact-item'
+        } 
     key={index} 
     onClick={() => props.showContact(contact)} 
     id={contact._id}

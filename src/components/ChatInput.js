@@ -8,7 +8,6 @@ export default function ChatInput(props) {
 
 
 
-
     const messagesFeed = props.messageHistory.map((obj, index) => {
         return <div className={
             obj.fromSender ?
@@ -16,7 +15,6 @@ export default function ChatInput(props) {
             "container-chat-content-recieved"
         }
             key={index}
-            ref={messageEnd}
         >
 
             <span>{obj.timeStamp}</span>
@@ -25,14 +23,15 @@ export default function ChatInput(props) {
     });
 
 
-    useEffect(() => {
+    useEffect(() => {   
 
         messagesFeed.length ? setMessagesLoaded(true) : setMessagesLoaded(false);
         if (messagesLoaded) {
-            messageEnd.current.scrollIntoView({ behavior: "smooth" });   
+            messageEnd.current.scrollIntoView(false, { behavior: "smooth" });   
         }
 
     }, [messagesFeed])
+
 
     return (
         <div className="container-chat">
@@ -42,9 +41,11 @@ export default function ChatInput(props) {
                 {isAvatarImageSet && <img className='avatar' src={avatarImage} alt='avatar' />}
 
             </div>
-            <div className="chat-body" >
+            <div className="chat-body"  >
+                <div className="messages-container" ref={messageEnd}>
+                    {messagesLoaded ? messagesFeed : <h2>Let's chat!</h2>}
 
-                {messagesLoaded ? messagesFeed : <h2>Let's chat!</h2>}
+                </div>
 
             </div>
 

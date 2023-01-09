@@ -5,7 +5,6 @@ import './register.css';
 import { registerRoute } from '../../utils/apiRoutes';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// const axios = require('axios');
 import axios from 'axios';
 
 
@@ -54,13 +53,6 @@ function Register() {
         theme: "light",
         transition: Zoom,
         }    
-
-    // Keeping loged in users on chat
-    // useEffect(() => {
-    //     if (localStorage.getItem("chat-app-user")) {
-    //     goTo('/')
-    //     }
-    // },[])
 
     
         const handleSubmit = async (e) => {
