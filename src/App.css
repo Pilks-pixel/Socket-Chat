@@ -18,10 +18,18 @@ Layout
   margin: 2rem;
 }
 
-.container-chat {
+.container-home-feed {
+  display: flex;
+  border: red 1px solid;
+  /* height: 500px; */
+}
+
+.container-chat,
+.container-welcome {
   border: solid 2px #454545;
   margin: 0 auto;
   width: 70%;
+  /* height: 100%; */
 }
 
 .chat-header,
@@ -33,27 +41,57 @@ Layout
 .chat-body {
   overflow: auto;
   height: 300px;
+  padding: 1rem;
+  /* image from https://www.svgbackgrounds.com/  color #22427F*/
+  background-color: #000000;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg fill-opacity='0.76'%3E%3Cpolygon fill='%23070d19' points='1600 160 0 460 0 350 1600 50'/%3E%3Cpolygon fill='%230e1a33' points='1600 260 0 560 0 450 1600 150'/%3E%3Cpolygon fill='%2314284c' points='1600 360 0 660 0 550 1600 250'/%3E%3Cpolygon fill='%231b3566' points='1600 460 0 760 0 650 1600 350'/%3E%3Cpolygon fill='%2322427F' points='1600 800 0 800 0 750 1600 450'/%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: fixed;
+  background-size: cover;
+}
 
+.chat-footer,
+.chat-header {
+  background-color: rgba(34, 66, 127, 1)
+
+}
+
+.chat-avatar {
+  height: 5rem;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  border: 3px solid rgba(34, 66, 127, .4); 
+}
+
+/* Chat content layout*/
+.container-messages {
+  display: flex;
+  flex-direction: column;
 }
 
 .container-chat-content-sent  {
   width: 80%;
+  max-width: 300px;
   margin-bottom: 1em;
   border: solid 1px #454545;
   border-radius: 5.6px;
   background-color: aqua;
-  opacity: .4;
+  opacity: .6;
+  align-self: flex-end;
 }
 
-.container-chat-content-recieved {
+.container-chat-content-received {
   width: 80%;
+  max-width: 300px;
   margin-bottom: 1em;
   border: solid 1px #454545;
   border-radius: 5.6px;
   background-color: #778899;
-  opacity: .4;
+  opacity: .6;
   color: #f5f5f5;
+  align-self: flex-start;
+
 }
+
 
 /* Avatar page */
 
@@ -73,42 +111,73 @@ Layout
   background: pink;
 }
 
+/* Contacts component */
+
 .container-contacts {
-  margin: auto;
-  width: 80%;
-  height: 250px;
+  margin: 0;
+  width: 30%;
   padding: 1rem;
   border:black 1px solid;
   display: flex;
   flex-direction: column;
   gap: 5px;
   overflow: auto;
+  /* background-color: rgba(34, 66, 127, .2) */
+
 }
 
-.container-contact-item, .container-contact-item-selected {
+.container-contact-item,
+.container-contact-item-selected {
   opacity: 0.5;
   border-radius: 2.6px;
   cursor: pointer;
+  border: 3px solid rgba(34, 66, 127, .4); 
   /* min-height: 1rem; */
 }
 
-.container-contact-current-user {
-  border-radius: 2.6px;
-  background-color: slategrey;
-  color: #f5f5f5;
-}
-
 .container-contact-item {
-  background: #d3d3d3;
+  background: #f5f5f5;
 }
 
 .container-contact-item-selected {
   background: skyblue;
 }
 
+.container-contact-current-user {
+  border-radius: 2.6px;
+  background-color: slategrey;
+  color: #f5f5f5;
+  border: 3px solid rgba(34, 66, 127, .4); 
+}
 
 .container-contacts .avatar{
   height: 3rem;
   border-radius: 50%;
 }
 
+/* Welcome component*/
+
+
+/* ==========
+Typography
+========== */
+@import url(https://fonts.googleapis.com/css?family=Coda+Caption:800);
+
+body {
+  font-family: 'Coda', cursive;
+}
+
+.heading-big {
+  font-family: 'Coda Caption', sans-serif;
+}
+
+.container-contact-item,
+.container-contact-item-selected,
+.container-contact-current-user {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.chat-header,
+.chat-body {
+  color: #f5f5f5;
+}

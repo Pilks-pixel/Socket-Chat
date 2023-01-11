@@ -12,7 +12,7 @@ export default function ChatInput(props) {
         return <div className={
             obj.fromSender ?
             "container-chat-content-sent" :
-            "container-chat-content-recieved"
+            "container-chat-content-received"
         }
             key={index}
         >
@@ -36,14 +36,13 @@ export default function ChatInput(props) {
     return (
         <div className="container-chat">
             <div className="chat-header">
-                <p> Room : {props.userData.roomNum}</p>
-                <h3>{username}</h3>
-                {isAvatarImageSet && <img className='avatar' src={avatarImage} alt='avatar' />}
+                <p> Chatting with {username}</p>
+                {isAvatarImageSet && <img className='chat-avatar' src={avatarImage} alt='avatar' />}
 
             </div>
             <div className="chat-body"  >
-                <div className="messages-container" ref={messageEnd}>
-                    {messagesLoaded ? messagesFeed : <h2>Let's chat!</h2>}
+                <div className="container-messages" ref={messageEnd}>
+                    {messagesLoaded ? messagesFeed : <h2 className="heading-big">Let's chat!</h2>}
 
                 </div>
 

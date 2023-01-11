@@ -5,8 +5,8 @@ import { messageRoute, allMessagesRoute } from "../../utils/apiRoutes";
 import axios from "axios";
 import "../../App.css";
 import io from "socket.io-client";
-// const socket = io.connect("http://localhost:5000");
-const socket = io.connect("https://socket-chat-node.onrender.com");
+const socket = io.connect("http://localhost:5000");
+// const socket = io.connect("https://socket-chat-node.onrender.com");
 
 function Home() {
 
@@ -114,33 +114,39 @@ function Home() {
 	}, [socket]);
 
 	return (
-		<div className='home'>
-			{selectedContact ? (
-				<ChatInput
-					socket={socket}
-					userData={messageData}
-					handleForm={handleInput}
-					handleSend={sendMessage}
-					messageHistory={chatHistory}
-					contact={selectedContact}
-					currentUser={currentUserToken}
-				/>
-			) : (
-				<Welcome currentUser={currentUserToken} />
-			)}
+		<div className='home-page'>
+      <div className="container-nav">
+        <h1 className="heading-big">Pixel Chat</h1>
+        <div className="links">
+          <span>Go to </span>
+          <Link to='/avatar'>Profile</Link>
+        </div>
+      </div>
+      <div className="container-home-feed">
+        <Contacts
+          showContact={handleChatChange}
+          contact={selectedContact}
+          currentUser={currentUserToken}
+        />
 
-			<SignOut socket={socket} currentUser={currentUserToken} />
+        {selectedContact ? (
+          <ChatInput
+            socket={socket}
+            userData={messageData}
+            handleForm={handleInput}
+            handleSend={sendMessage}
+            messageHistory={chatHistory}
+            contact={selectedContact}
+            currentUser={currentUserToken}
+          />
+        ) : (
+          <Welcome currentUser={currentUserToken} />
+        )}
 
-			<div>
-				<span>Go to </span>
-				<Link to='/avatar'>Profile</Link>
-			</div>
-
-			<Contacts
-				showContact={handleChatChange}
-				contact={selectedContact}
-				currentUser={currentUserToken}
-			/>
+      </div>
+      <div className="container-footer">
+        <SignOut socket={socket} currentUser={currentUserToken} />
+      </div>
 		</div>
 	);
 }
