@@ -115,38 +115,38 @@ function Home() {
 
 	return (
 		<div className='home-page'>
-      <div className="container-nav">
-        <h1 className="heading-big">Pixel Chat</h1>
-        <div className="links">
-          <span>Go to </span>
-          <Link to='/avatar'>Profile</Link>
-        </div>
-      </div>
-      <div className="container-home-feed">
-        <Contacts
-          showContact={handleChatChange}
-          contact={selectedContact}
-          currentUser={currentUserToken}
-        />
+			<div className="container-nav">
+				<h1 className="heading-big">Pixel Chat</h1>
+				<div className="links">
+				<span>Go to </span>
+				<Link to='/avatar'>Profile</Link>
+				</div>
+			</div>
+			<div className="container-home-feed">
+				<Contacts
+				showContact={handleChatChange}
+				contact={selectedContact}
+				currentUser={currentUserToken}
+				/>
 
-        {selectedContact ? (
-          <ChatInput
-            socket={socket}
-            userData={messageData}
-            handleForm={handleInput}
-            handleSend={sendMessage}
-            messageHistory={chatHistory}
-            contact={selectedContact}
-            currentUser={currentUserToken}
-          />
-        ) : (
-          <Welcome currentUser={currentUserToken} />
-        )}
+				{selectedContact ? (
+				<ChatInput
+					socket={socket}
+					userData={messageData}
+					handleForm={handleInput}
+					handleSend={sendMessage}
+					messageHistory={chatHistory}
+					contact={selectedContact}
+					currentUser={currentUserToken}
+				/>
+				) : (
+				<Welcome currentUser={currentUserToken} />
+				)}
 
-      </div>
-      <div className="container-footer">
-        <SignOut socket={socket} currentUser={currentUserToken} />
-      </div>
+			</div>
+			<div className="container-footer">
+				<SignOut socket={socket} currentUser={currentUserToken} />
+			</div>
 		</div>
 	);
 }
