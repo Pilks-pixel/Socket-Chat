@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ChatInput, SignOut, Contacts, Welcome } from "../../components";
-import { messageRoute, allMessagesRoute } from "../../utils/apiRoutes";
+import {
+	messageRoute,
+	allMessagesRoute,
+	contactRoute,
+} from "../../utils/apiRoutes";
 import axios from "axios";
 import "../../App.css";
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("http://localhost:8080");
 // const socket = io.connect("https://socket-chat-node.onrender.com");
 
 function Home() {
-
 	const [messageData, setMessageData] = useState({
 		mes: "",
 		time: "",
@@ -18,7 +22,9 @@ function Home() {
 	const [currentUserToken, setCurrentUserToken] = useState(
 		JSON.parse(localStorage.getItem("jwtToken"))
 	);
+	const [user, setUser] = useState("");
 	const [selectedContact, setSelectedContact] = useState("");
+	const goTo = useNavigate();
 
 	// messageData handler functions
 	const handleInput = e => {
@@ -70,12 +76,20 @@ function Home() {
 	// Contact functionality
 	const handleChatChange = contact => {
 		setSelectedContact(contact);
-    console.log({contact})
-
 	};
 
 	useEffect(() => {
 		socket.emit("add_user", currentUserToken.user._id);
+
+		const getUser = async () => {
+			const res = await axios.get(
+				`${contactRoute}/${currentUserToken.user._id}`
+			);
+			console.log(res.data);
+			setUser(res.data);
+		};
+
+		getUser();
 	}, [selectedContact, currentUserToken]);
 
 	useEffect(() => {
@@ -93,19 +107,19 @@ function Home() {
 
 	// Socket event listener functionality
 	useEffect(() => {
-		socket.on("receive_message", (data) => {
-			if (data.from ===  selectedContact._id){
-        setChatHistory(prevHistory => {
-          return [
-            ...prevHistory,
-            {
-              fromSender: false,
-              message: data.message,
-              timeStamp: data.timeStamp,
-            },
-          ];
-        });
-      };
+		socket.on("receive_message", data => {
+			if (data.from === selectedContact._id) {
+				setChatHistory(prevHistory => {
+					return [
+						...prevHistory,
+						{
+							fromSender: false,
+							message: data.message,
+							timeStamp: data.timeStamp,
+						},
+					];
+				});
+			}
 		});
 
 		return () => {
@@ -115,36 +129,32 @@ function Home() {
 
 	return (
 		<div className='home-page'>
-			<div className="container-nav">
-				<h1 className="heading-big">Pixel Chat</h1>
-				<div className="links">
-				<span>Go to </span>
-				<Link to='/avatar'>Profile</Link>
-				</div>
+			<div className='container-nav'>
+				<h1 className='heading-big'>Pixel Chat</h1>
+				<button className='links' onClick={() => goTo("/profile", {state: user})}>Profile</button>
 			</div>
-			<div className="container-home-feed">
+			<div className='container-home-feed'>
 				<Contacts
-				showContact={handleChatChange}
-				contact={selectedContact}
-				currentUser={currentUserToken}
+					showContact={handleChatChange}
+					contact={selectedContact}
+					currentUser={user}
+					token={currentUserToken}
 				/>
 
 				{selectedContact ? (
-				<ChatInput
-					socket={socket}
-					userData={messageData}
-					handleForm={handleInput}
-					handleSend={sendMessage}
-					messageHistory={chatHistory}
-					contact={selectedContact}
-					currentUser={currentUserToken}
-				/>
+					<ChatInput
+						socket={socket}
+						userData={messageData}
+						handleForm={handleInput}
+						handleSend={sendMessage}
+						messageHistory={chatHistory}
+						contact={selectedContact}
+					/>
 				) : (
-				<Welcome currentUser={currentUserToken} />
+					<Welcome currentUser={currentUserToken} />
 				)}
-
 			</div>
-			<div className="container-footer">
+			<div className='container-footer'>
 				<SignOut socket={socket} currentUser={currentUserToken} />
 			</div>
 		</div>

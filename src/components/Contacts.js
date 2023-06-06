@@ -6,16 +6,17 @@ import { contactsRoute } from "../utils/apiRoutes";
 function Contacts(props) {
 
 	const [contactData, setContactData] = useState([]);
-	const { username, avatarImage, isAvatarImageSet } = props.currentUser.user;
+	const { username, avatarImage, isAvatarImageSet } = props.currentUser;
 
 	useEffect(() => {
+		const { user, accessToken } = props.token;
+
 		const getContacts = async () => {
-			const { user, accessToken } = props.currentUser;
 			axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 			const res = await axios.get(`${contactsRoute}/${user._id}`);
-			// console.log(res.data)
 			setContactData(res.data);
 		};
+
 		getContacts();
 	}, [props.currentUser]);
 

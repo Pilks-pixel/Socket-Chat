@@ -51,14 +51,7 @@ function Login(props) {
         transition: Zoom,
         }    
 
-    //Keeping loged in users on chat
-    // useEffect(() => {
-    //   if (localStorage.getItem("jwtToken")) {
-    //     props.setLoggedIn(true);
 
-    //     // goTo('/')
-    //   }
-    // },[])
 
     
     // Form submission & validation
