@@ -9,7 +9,7 @@ import axios from "axios";
 
 function Avatar({ selectedAvatar, setSelectedAvatar }) {
 	const avatarUrl = "https://avatars.dicebear.com/api/pixel-art/";
-	const [newAvatar, setNewAvatar] = useState(false);
+	const [newAvatarArray, setNewAvatarArray] = useState(false);
 	const [avatars, setAvatars] = useState([]);
 	const [currentUser, setCurrentUser] = useState(
 		JSON.parse(localStorage.getItem("jwtToken"))
@@ -26,7 +26,7 @@ function Avatar({ selectedAvatar, setSelectedAvatar }) {
 	};
 
 	const genNewAvatars = () => {
-		setNewAvatar(prevAvatars => !prevAvatars);
+		setNewAvatarArray(prevAvatars => !prevAvatars);
 		setSelectedAvatar("");
 	};
 
@@ -92,7 +92,7 @@ function Avatar({ selectedAvatar, setSelectedAvatar }) {
 
 		setAvatars(avatarOptions);
 		setIsLoading(false);
-	}, [newAvatar]);
+	}, [newAvatarArray]);
 
 	const showAvatars = avatars.map((a, i) => {
 		return (

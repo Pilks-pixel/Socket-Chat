@@ -12,6 +12,10 @@ function Profile() {
 	const settingsToggle = () =>
 		setDisplaySettings(prevSettings => !prevSettings);
 
+	const deleteUser = () => {
+		// modal with display none
+	}	
+
 	return (
 		<div className='container'>
 			<h2>Profile</h2>
@@ -31,7 +35,13 @@ function Profile() {
 			{displaySettings && (
 				<Avatar selectedAvatar={newAvatar} setSelectedAvatar={setNewAvatar} />
 			)}
-
+			<div className="modal_container"></div>
+				<button>Delete Account</button>
+				<div className="modal">
+					<p>Are you sure you wish to delete your account?</p>
+					<button className="yes">Yes</button>
+					<button className="no">no</button>
+				</div>
 			<div>
 				<span>Go to </span>
 				<Link to='/'>Chat</Link>
