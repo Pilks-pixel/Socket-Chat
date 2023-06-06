@@ -73,7 +73,7 @@ function Home() {
 		}
 	};
 
-	// Contact functionality
+	// User & Contact functionality
 	const handleChatChange = contact => {
 		setSelectedContact(contact);
 	};
