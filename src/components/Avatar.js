@@ -7,13 +7,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-function Avatar({ selectedAvatar, setSelectedAvatar }) {
+function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser }) {
 	const avatarUrl = "https://avatars.dicebear.com/api/pixel-art/";
 	const [newAvatarArray, setNewAvatarArray] = useState(false);
 	const [avatars, setAvatars] = useState([]);
-	const [currentUser, setCurrentUser] = useState(
-		JSON.parse(localStorage.getItem("jwtToken"))
-	);
 	const [isLoading, setIsLoading] = useState(false);
 
 	function randomInt() {

@@ -1,9 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Avatar } from "../../components";
+import { contactRoute, deleteMessagesRoute } from "../../utils/apiRoutes";
 import "../../App.css";
 import "../register/register.css";
-import { Avatar } from "../../components";
 import axios from "axios";
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:8080");
+// const socket = io.connect("https://socket-chat-node.onrender.com");
+
 
 function Profile() {
 	let location = useLocation();
@@ -11,13 +16,33 @@ function Profile() {
 	const [displaySettings, setDisplaySettings] = useState(false);
 	const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
 	const ref = useRef();
+	const goTo = useNavigate();
+	const [token, setToken] = useState(
+		JSON.parse(localStorage.getItem("jwtToken"))
+	);
 
 	const settingsToggle = () =>
 		setDisplaySettings(prevSettings => !prevSettings);
 
-	const deleteUser = () => {
-		console.log("User delete");
-		// axios.
+	const deleteUser = async () => {
+		try {
+			const [messagesRes, userRes] = await Promise.all([
+				axios.delete(`${deleteMessagesRoute}/${token.user._id}/delete`),	
+				axios.delete(`${contactRoute}/${token.user._id}/delete`)
+			])
+			console.log(userRes.data);
+			console.log(messagesRes.data);
+
+			if (messagesRes && userRes) {
+				localStorage.removeItem('jwtToken');
+				socket.emit('remove_user', token.user._id);
+				goTo('/login')
+			}
+			
+		} catch (err) {
+			console.error("Error deleting user or messages:", err);
+		}
+
 	};
 
 	// Modal Logic
@@ -58,7 +83,7 @@ function Profile() {
 			</div>
 
 			{displaySettings && (
-				<Avatar selectedAvatar={newAvatar} setSelectedAvatar={setNewAvatar} />
+				<Avatar selectedAvatar={newAvatar} setSelectedAvatar={setNewAvatar} currentUser={token} setCurrentUser={setToken}/>
 			)}
 
 			<button

@@ -4,10 +4,9 @@ const host = "http://localhost:8080";
 // Auth Routes
 const registerRoute = `${host}/api/auth/register`;
 const loginRoute = `${host}/api/auth/login`;
-const setAvatarRoute = `${host}/api/auth/avatar`;
 const contactRoute = `${host}/api/auth/contact`;
 const contactsRoute = `${host}/api/auth/contacts`;
-// const deleteContactRoute = `${host}/api/auth/contact`;
+const setAvatarRoute = `${host}/api/auth/avatar`;
 const userRoute = `${host}/api/auth`;
 
 // Message Routes
@@ -24,4 +23,5 @@ export {
 	messageRoute,
 	allMessagesRoute,
 	contactRoute,
+    deleteMessagesRoute
 };
