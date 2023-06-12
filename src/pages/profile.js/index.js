@@ -9,7 +9,6 @@ import io from "socket.io-client";
 const socket = io.connect("http://localhost:8080");
 // const socket = io.connect("https://socket-chat-node.onrender.com");
 
-
 function Profile() {
 	let location = useLocation();
 	const [newAvatar, setNewAvatar] = useState("");
@@ -24,25 +23,24 @@ function Profile() {
 	const settingsToggle = () =>
 		setDisplaySettings(prevSettings => !prevSettings);
 
+	// Delete Current User & Messages
 	const deleteUser = async () => {
 		try {
 			const [messagesRes, userRes] = await Promise.all([
-				axios.delete(`${deleteMessagesRoute}/${token.user._id}/delete`),	
-				axios.delete(`${contactRoute}/${token.user._id}/delete`)
-			])
+				axios.delete(`${deleteMessagesRoute}/${token.user._id}/delete`),
+				axios.delete(`${contactRoute}/${token.user._id}/delete`),
+			]);
 			console.log(userRes.data);
 			console.log(messagesRes.data);
 
 			if (messagesRes && userRes) {
-				localStorage.removeItem('jwtToken');
-				socket.emit('remove_user', token.user._id);
-				goTo('/login')
+				localStorage.removeItem("jwtToken");
+				socket.emit("remove_user", token.user._id);
+				goTo("/login");
 			}
-			
 		} catch (err) {
 			console.error("Error deleting user or messages:", err);
 		}
-
 	};
 
 	// Modal Logic
@@ -83,7 +81,12 @@ function Profile() {
 			</div>
 
 			{displaySettings && (
-				<Avatar selectedAvatar={newAvatar} setSelectedAvatar={setNewAvatar} currentUser={token} setCurrentUser={setToken}/>
+				<Avatar
+					selectedAvatar={newAvatar}
+					setSelectedAvatar={setNewAvatar}
+					currentUser={token}
+					setCurrentUser={setToken}
+				/>
 			)}
 
 			<button
@@ -95,7 +98,7 @@ function Profile() {
 				Delete Account
 			</button>
 
-			<dialog ref={ref} className='modal' aria-modal='true' role="alertdialog">
+			<dialog ref={ref} className='modal' aria-modal='true' role='alertdialog'>
 				<h3>Are you sure you wish to delete your account?</h3>
 				<button className='btn--no'>no</button>
 				<button onClick={deleteUser} className='btn--yes'>

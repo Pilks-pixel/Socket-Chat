@@ -16,6 +16,7 @@ const socket = io.connect("http://localhost:8080");
 function Home() {
 	const [messageData, setMessageData] = useState({
 		mes: "",
+		gif: "",
 		time: "",
 	});
 	const [chatHistory, setChatHistory] = useState([]);
@@ -26,27 +27,15 @@ function Home() {
 	const [selectedContact, setSelectedContact] = useState("");
 	const goTo = useNavigate();
 
-	// messageData handler functions
-	const handleInput = e => {
-		const { name, value } = e.target;
-		const date = new Date();
-		let minutes = date.getMinutes();
-		if (minutes < 10) {
-			minutes = minutes.toString().padStart(2, 0);
-		}
-		setMessageData({
-			...messageData,
-			time: `${date.getHours()} : ${minutes} `,
-			[name]: value,
-		});
-	};
-
-	const sendMessage = async () => {
+	// Send messageData to Socket & API
+	const sendMessage = async (e) => {
+		e.preventDefault()
 		if (messageData.mes !== "") {
 			await socket.emit("send_message", {
 				from: currentUserToken.user._id,
 				to: selectedContact._id,
 				message: messageData.mes,
+				gif: messageData.gif,
 				timeStamp: messageData.time,
 			});
 
@@ -56,6 +45,7 @@ function Home() {
 					{
 						fromSender: true,
 						message: messageData.mes,
+						gif: messageData.gif,
 						timeStamp: messageData.time,
 					},
 				];
@@ -65,15 +55,16 @@ function Home() {
 				from: currentUserToken.user._id,
 				to: selectedContact._id,
 				message: messageData.mes,
+				gif: messageData.gif,
 				timeStamp: messageData.time,
 			});
-			// console.log(messageData);
+			console.log(messageData);
 
-			setMessageData(prevMessageData => ({ ...prevMessageData, mes: "" }));
+			setMessageData(prevMessageData => ({ ...prevMessageData, mes: "", gif: ""}));
 		}
 	};
 
-	// User & Contact functionality
+	// Get User & Contact with Message History
 	const handleChatChange = contact => {
 		setSelectedContact(contact);
 	};
@@ -85,15 +76,10 @@ function Home() {
 			const res = await axios.get(
 				`${contactRoute}/${currentUserToken.user._id}`
 			);
-			console.log(res.data);
 			setUser(res.data);
 		};
 
-		getUser();
-	}, [selectedContact, currentUserToken]);
-
-	useEffect(() => {
-		async function getMessageHistory() {
+		 const getMessageHistory = async () => {
 			const res = await axios.post(allMessagesRoute, {
 				from: currentUserToken.user._id,
 				to: selectedContact._id,
@@ -102,8 +88,12 @@ function Home() {
 			setChatHistory(res.data);
 		}
 
+		getUser();
 		getMessageHistory();
-	}, [selectedContact]);
+		
+	}, [selectedContact, currentUserToken]);
+
+
 
 	// Socket event listener functionality
 	useEffect(() => {
@@ -115,6 +105,7 @@ function Home() {
 						{
 							fromSender: false,
 							message: data.message,
+							gif: data.gif,
 							timeStamp: data.timeStamp,
 						},
 					];
@@ -145,7 +136,7 @@ function Home() {
 					<ChatInput
 						socket={socket}
 						userData={messageData}
-						handleForm={handleInput}
+						setUserData={setMessageData}
 						handleSend={sendMessage}
 						messageHistory={chatHistory}
 						contact={selectedContact}
