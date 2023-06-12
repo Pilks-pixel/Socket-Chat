@@ -64,7 +64,7 @@ export default function ChatInput(props) {
 		console.log(gifId[0].url)
 		props.setUserData({
 			...props.userData,
-			gif: gifId[0].images.original.url
+			gif: gifId[0].images.looping.mp4
 
 		});
 		// setSelectedGif(e.target.key)
@@ -72,7 +72,7 @@ export default function ChatInput(props) {
 
 	// Display Message History
 	const messagesFeed = props.messageHistory.map((obj, index) => {
-		// console.log(obj)
+
 		return (
 			<div
 				className={
@@ -83,7 +83,9 @@ export default function ChatInput(props) {
 				key={index}
 			>
 				<span>{obj.timeStamp}</span>
-				{obj.gif && <img src={obj.gif} alt="gif" />}
+				{obj.gif && <video controls>
+						<source src={obj.gif}  type="video/mp4"/>
+					 </video>}
 				<p>{obj.message}</p>
 			</div>
 		);
