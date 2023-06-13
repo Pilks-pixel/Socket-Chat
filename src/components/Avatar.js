@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import "../App.css";
 import { setAvatarRoute } from "../utils/apiRoutes";
-import { toastWarning, toastSucess } from "../utils/notifications";
+import { toastWarning, toastSucess, randomInt } from "../utils/notifications";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -13,9 +13,6 @@ function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser
 	const [avatars, setAvatars] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
-	function randomInt() {
-		return Math.floor(Math.random() * 20) + 1;
-	}
 
 	// Avatar Select & Set Logic
 	const handleClick = e => {
@@ -86,7 +83,7 @@ function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser
 			};
 			createAvatar();
 		}
-
+        console.log(avatarOptions);
 		setAvatars(avatarOptions);
 		setIsLoading(false);
 	}, [newAvatarArray]);

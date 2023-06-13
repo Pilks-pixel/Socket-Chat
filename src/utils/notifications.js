@@ -25,4 +25,8 @@ const toastSucess = {
     transition: Zoom,
 };
 
-export { toastWarning, toastSucess }
+function randomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+export { toastWarning, toastSucess, randomInt }
