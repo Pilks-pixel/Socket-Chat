@@ -8,7 +8,6 @@ export default function ChatInput(props) {
 	const messageEnd = useRef();
 	const [gifArray, setGifArray] = useState([]);
 	const [displayGifs, setdisplayGifs] = useState(false);
-	const [gifLoading, setGifLoading] = useState(false);
 	const [gifData, setGifData] = useState([]);
 
 	// Create Message
@@ -32,7 +31,7 @@ export default function ChatInput(props) {
 		const getGifs = async () => {
 			try {
 				const res = await axios.get(
-					"https://api.giphy.com/v1/gifs/trending?api_key=actNFVElp7HT7PpQ0FN8quC7zS8z8Jy0&limit=21"
+					"https://api.giphy.com/v1/gifs/trending?api_key=actNFVElp7HT7PpQ0FN8quC7zS8z8Jy0&limit=20"
 				);
 				const gifsWithID = res.data.data.map(gifObject => {
 					return {
@@ -40,7 +39,6 @@ export default function ChatInput(props) {
 						keyId: crypto.randomUUID(),
 					};
 				});
-
 				setGifData(gifsWithID);
 			} catch (err) {
 				console.error(err);
@@ -52,7 +50,6 @@ export default function ChatInput(props) {
 
 	useEffect(() => {
 		if (gifData.length > 0) {
-			setGifLoading(true);
 			const randomGifs = [];
 
 			function addGif() {
@@ -68,8 +65,8 @@ export default function ChatInput(props) {
 			for (let i = 0; i < 6; i++) {
 				addGif();
 			}
+
 			setGifArray(randomGifs);
-			setGifLoading(false);
 		}
 	}, [displayGifs]);
 

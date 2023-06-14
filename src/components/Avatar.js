@@ -7,12 +7,16 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser }) {
+function Avatar({
+	selectedAvatar,
+	setSelectedAvatar,
+	currentUser,
+	setCurrentUser,
+}) {
 	const avatarUrl = "https://avatars.dicebear.com/api/pixel-art/";
 	const [newAvatarArray, setNewAvatarArray] = useState(false);
 	const [avatars, setAvatars] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-
 
 	// Avatar Select & Set Logic
 	const handleClick = e => {
@@ -74,7 +78,8 @@ function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser
 		const avatarOptions = [];
 		for (let i = 0; i < 4; i++) {
 			let createAvatar = () => {
-				let seed = `${avatarUrl}:${randomInt()}.svg`;
+				let id = crypto.randomUUID();
+				let seed = { keyId: id, url: `${avatarUrl}:${randomInt(20)}.svg` };
 				if (!avatarOptions.includes(seed)) {
 					return avatarOptions.push(seed);
 				} else {
@@ -83,17 +88,17 @@ function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser
 			};
 			createAvatar();
 		}
-        console.log(avatarOptions);
+		console.log(avatarOptions);
 		setAvatars(avatarOptions);
 		setIsLoading(false);
 	}, [newAvatarArray]);
 
-	const showAvatars = avatars.map((a, i) => {
+	const showAvatars = avatars.map(a => {
 		return (
 			<img
-				key={i}
-				className={selectedAvatar === a ? "selected-avatar" : "avatar"}
-				src={a}
+				key={a.keyId}
+				className={selectedAvatar === a.url ? "selected-avatar" : "avatar"}
+				src={a.url}
 				alt='user avatar option'
 				onClick={handleClick}
 			/>
