@@ -1,9 +1,10 @@
 import axios from "axios";
 import { React, useState, useEffect, useRef } from "react";
+import { Emoji } from ".";
 import { randomInt } from "../utils/notifications";
 
 export default function ChatInput(props) {
-	const { username, avatarImage, isAvatarImageSet } = props.contact;
+	const { username, avatarImage, isAvatarImageSet, _id } = props.contact;
 	const [messagesLoaded, setMessagesLoaded] = useState(false);
 	const messageEnd = useRef();
 	const [gifArray, setGifArray] = useState([]);
@@ -54,7 +55,7 @@ export default function ChatInput(props) {
 
 			function addGif() {
 				let seed = gifData[randomInt(gifData.length)];
-				console.log({ seed }, gifData);
+
 				if (!randomGifs.includes(seed)) {
 					return randomGifs.push(seed);
 				} else {
@@ -98,7 +99,9 @@ export default function ChatInput(props) {
 	};
 
 	// Display Message History
+	console.log(props.messageHistory)
 	const messagesFeed = props.messageHistory.map((obj, index) => {
+		// console.log(obj)
 		return (
 			<div
 				className={
@@ -108,7 +111,20 @@ export default function ChatInput(props) {
 				}
 				key={index}
 			>
-				<span>{obj.timeStamp}</span>
+				<div className='container-chat__info'>
+					<Emoji
+						id={obj.messageId}
+						likeEmoji={obj.likeStatus}
+						laughEmoji={obj.laughStatus}
+						socket={props.socket}
+						selectedContactId={_id}
+						UserToken={props.token}
+						emojiHistory={props.messageHistory}
+						setEmojiHistory={props.setMessageHistory}
+					/>
+					<span>{obj.timeStamp}</span>
+				</div>
+
 				{obj.gif && (
 					<video controls className='gif_image'>
 						<source src={obj.gif} type='video/mp4' />

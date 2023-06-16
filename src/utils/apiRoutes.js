@@ -1,7 +1,7 @@
 const host = "http://localhost:8080";
 // const host = 'https://socket-chat-node.onrender.com';
 
-// Auth Routes
+// Auth & User Routes
 const registerRoute = `${host}/api/auth/register`;
 const loginRoute = `${host}/api/auth/login`;
 const contactRoute = `${host}/api/auth/contact`;
@@ -12,6 +12,7 @@ const userRoute = `${host}/api/auth`;
 // Message Routes
 const messageRoute = `${host}/api/message/create`;
 const allMessagesRoute = `${host}/api/messages`;
+const updateMessageRoute = `${host}/api/message`;
 const deleteMessagesRoute = `${host}/api/message`;
 
 export {
@@ -23,5 +24,6 @@ export {
 	messageRoute,
 	allMessagesRoute,
 	contactRoute,
-    deleteMessagesRoute
+	deleteMessagesRoute,
+	updateMessageRoute,
 };

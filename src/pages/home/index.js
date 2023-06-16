@@ -28,14 +28,19 @@ function Home() {
 	const goTo = useNavigate();
 
 	// Send messageData to Socket & API
-	const sendMessage = async (e) => {
-		e.preventDefault()
+	const sendMessage = async e => {
+		e.preventDefault();
+		const messageId = crypto.randomUUID();
+
 		if (messageData.mes !== "") {
 			await socket.emit("send_message", {
+				secondaryId: messageId,
 				from: currentUserToken.user._id,
 				to: selectedContact._id,
 				message: messageData.mes,
 				gif: messageData.gif,
+				likeStatus : false,
+				laughStatus : false,
 				timeStamp: messageData.time,
 			});
 
@@ -43,24 +48,33 @@ function Home() {
 				return [
 					...prevHistory,
 					{
+						messageId: messageId,
 						fromSender: true,
 						message: messageData.mes,
 						gif: messageData.gif,
+						likeStatus : false,
+						laughStatus : false,
 						timeStamp: messageData.time,
 					},
 				];
 			});
 
 			await axios.post(messageRoute, {
+				secondaryId: messageId,
 				from: currentUserToken.user._id,
 				to: selectedContact._id,
 				message: messageData.mes,
 				gif: messageData.gif,
+				likeStatus : false,
+				laughStatus : false,
 				timeStamp: messageData.time,
 			});
-			console.log(messageData);
 
-			setMessageData(prevMessageData => ({ ...prevMessageData, mes: "", gif: ""}));
+			setMessageData(prevMessageData => ({
+				...prevMessageData,
+				mes: "",
+				gif: "",
+			}));
 		}
 	};
 
@@ -79,21 +93,18 @@ function Home() {
 			setUser(res.data);
 		};
 
-		 const getMessageHistory = async () => {
+		const getMessageHistory = async () => {
 			const res = await axios.post(allMessagesRoute, {
 				from: currentUserToken.user._id,
 				to: selectedContact._id,
 			});
 
 			setChatHistory(res.data);
-		}
+		};
 
 		getUser();
 		getMessageHistory();
-		
 	}, [selectedContact, currentUserToken]);
-
-
 
 	// Socket event listener functionality
 	useEffect(() => {
@@ -103,9 +114,12 @@ function Home() {
 					return [
 						...prevHistory,
 						{
+							messageId: data.secondaryId,
 							fromSender: false,
 							message: data.message,
 							gif: data.gif,
+							likeStatus: data.likeStatus,
+							laughStatus: data.laughStatus,
 							timeStamp: data.timeStamp,
 						},
 					];
@@ -113,16 +127,40 @@ function Home() {
 			}
 		});
 
+		socket.on("receive_message_update", data => {
+			if (data.from === selectedContact._id) {
+				console.log({ data }, "data from other user");
+
+				const updatedArr = chatHistory.map(msg => {
+					return msg.messageId === data.messageId
+						? {
+								...msg,
+								likeStatus: data.likeStatus,
+								laughStatus: data.laughStatus,
+						  }
+						: msg;
+				});
+				console.log(updatedArr, 'array update')
+				setChatHistory(updatedArr);
+
+			}
+		});
+
 		return () => {
 			socket.off("receive_message");
 		};
-	}, [socket]);
+	}, [chatHistory]);
 
 	return (
 		<div className='home-page'>
 			<div className='container-nav'>
 				<h1 className='heading-big'>Pixel Chat</h1>
-				<button className='links' onClick={() => goTo("/profile", {state: user})}>Profile</button>
+				<button
+					className='links'
+					onClick={() => goTo("/profile", { state: user })}
+				>
+					Profile
+				</button>
 			</div>
 			<div className='container-home-feed'>
 				<Contacts
@@ -139,7 +177,9 @@ function Home() {
 						setUserData={setMessageData}
 						handleSend={sendMessage}
 						messageHistory={chatHistory}
+						setMessageHistory={setChatHistory}
 						contact={selectedContact}
+						token={currentUserToken}
 					/>
 				) : (
 					<Welcome currentUser={currentUserToken} />
