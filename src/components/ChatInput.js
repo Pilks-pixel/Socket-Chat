@@ -90,7 +90,7 @@ export default function ChatInput(props) {
 
 	const selectGif = e => {
 		let gifId = gifArray.filter(g => g.id === e.target.id);
-		console.log(gifId[0].url);
+
 		props.setUserData({
 			...props.userData,
 			gif: gifId[0].images.looping.mp4,
@@ -98,10 +98,8 @@ export default function ChatInput(props) {
 		setdisplayGifs(prevGifs => !prevGifs);
 	};
 
-	// Display Message History
-	console.log(props.messageHistory)
+	// Display Message History & Emoji For Selected Contact
 	const messagesFeed = props.messageHistory.map((obj, index) => {
-		// console.log(obj)
 		return (
 			<div
 				className={
@@ -112,16 +110,18 @@ export default function ChatInput(props) {
 				key={index}
 			>
 				<div className='container-chat__info'>
-					<Emoji
-						id={obj.messageId}
-						likeEmoji={obj.likeStatus}
-						laughEmoji={obj.laughStatus}
-						socket={props.socket}
-						selectedContactId={_id}
-						UserToken={props.token}
-						emojiHistory={props.messageHistory}
-						setEmojiHistory={props.setMessageHistory}
-					/>
+					{(!obj.fromSender || obj.likeStatus || obj.laughStatus) && (
+						<Emoji
+							id={obj.messageId}
+							likeEmoji={obj.likeStatus}
+							laughEmoji={obj.laughStatus}
+							socket={props.socket}
+							selectedContactId={_id}
+							UserToken={props.token}
+							emojiHistory={props.messageHistory}
+							setEmojiHistory={props.setMessageHistory}
+						/>
+					)}
 					<span>{obj.timeStamp}</span>
 				</div>
 

@@ -13,8 +13,6 @@ export default function Emoji({ id, likeEmoji, laughEmoji, socket, selectedConta
 
 	const addEmoji = async (e) => {
 		const firstWord = e.currentTarget.className.split(" ")[0];
-
-		console.log({id}, 'emoji update');
         
 		if (firstWord === "content__like") {
             likeEmoji = true;
@@ -49,7 +47,7 @@ export default function Emoji({ id, likeEmoji, laughEmoji, socket, selectedConta
 				likeStatus: likeEmoji,
 				laughStatus: laughEmoji
 			});
-			console.log(res);
+
 		} catch (err) {
 			console.error(err);
 		}

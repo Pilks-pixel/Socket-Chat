@@ -25,8 +25,10 @@ const toastSucess = {
     transition: Zoom,
 };
 
+const swearWords = ["shit", "fuck", "prick", "nob", "cunt"];
+
 function randomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-export { toastWarning, toastSucess, randomInt }
+export { toastWarning, toastSucess, swearWords, randomInt }

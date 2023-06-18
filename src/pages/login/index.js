@@ -36,7 +36,6 @@ function Login(props) {
 					password: password,
 				});
 
-				// console.log(resp.data)
 				if (resp.data.status === true && resp.data.accessToken) {
 					toast.success("Login Sucessful", toastSucess);
 					localStorage.setItem("jwtToken", JSON.stringify(resp.data));

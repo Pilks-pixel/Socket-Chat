@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ChatInput, SignOut, Contacts, Welcome } from "../../components";
 import {
@@ -7,6 +6,7 @@ import {
 	allMessagesRoute,
 	contactRoute,
 } from "../../utils/apiRoutes";
+import { swearWords } from "../../utils/notifications";
 import axios from "axios";
 import "../../App.css";
 import io from "socket.io-client";
@@ -27,20 +27,41 @@ function Home() {
 	const [selectedContact, setSelectedContact] = useState("");
 	const goTo = useNavigate();
 
-	// Send messageData to Socket & API
+	// Mask abusive content
+	const badWord = message => {
+		let str = message;
+
+		for (let word of swearWords) {
+			let regexp = new RegExp(`${word}`, "g");
+			let crossedOutWord = "";
+
+			for (let i = 0; i < word.length; i++) {
+				crossedOutWord += "x";
+			}
+
+			str = str.replace(regexp, crossedOutWord);
+		}
+
+		return str;
+	};
+
+	// Send messageData to Socket, API, chatHistory
 	const sendMessage = async e => {
 		e.preventDefault();
 		const messageId = crypto.randomUUID();
+		const cleanMessage = badWord(messageData.mes);
 
 		if (messageData.mes !== "") {
+			console.log(cleanMessage);
+
 			await socket.emit("send_message", {
 				secondaryId: messageId,
 				from: currentUserToken.user._id,
 				to: selectedContact._id,
-				message: messageData.mes,
+				message: cleanMessage,
 				gif: messageData.gif,
-				likeStatus : false,
-				laughStatus : false,
+				likeStatus: false,
+				laughStatus: false,
 				timeStamp: messageData.time,
 			});
 
@@ -50,10 +71,10 @@ function Home() {
 					{
 						messageId: messageId,
 						fromSender: true,
-						message: messageData.mes,
+						message: cleanMessage,
 						gif: messageData.gif,
-						likeStatus : false,
-						laughStatus : false,
+						likeStatus: false,
+						laughStatus: false,
 						timeStamp: messageData.time,
 					},
 				];
@@ -63,10 +84,10 @@ function Home() {
 				secondaryId: messageId,
 				from: currentUserToken.user._id,
 				to: selectedContact._id,
-				message: messageData.mes,
+				message: cleanMessage,
 				gif: messageData.gif,
-				likeStatus : false,
-				laughStatus : false,
+				likeStatus: false,
+				laughStatus: false,
 				timeStamp: messageData.time,
 			});
 
@@ -129,8 +150,6 @@ function Home() {
 
 		socket.on("receive_message_update", data => {
 			if (data.from === selectedContact._id) {
-				console.log({ data }, "data from other user");
-
 				const updatedArr = chatHistory.map(msg => {
 					return msg.messageId === data.messageId
 						? {
@@ -140,9 +159,8 @@ function Home() {
 						  }
 						: msg;
 				});
-				console.log(updatedArr, 'array update')
-				setChatHistory(updatedArr);
 
+				setChatHistory(updatedArr);
 			}
 		});
 
