@@ -50,7 +50,6 @@ function Home() {
 		const cleanMessage = badWord(messageData.mes);
 
 		if (messageData.mes !== "") {
-
 			await socket.emit("send_message", {
 				secondaryId: messageId,
 				from: currentUserToken.user._id,
@@ -101,6 +100,7 @@ function Home() {
 		setSelectedContact(contact);
 	};
 
+	/* eslint-disable react-hooks/exhaustive-deps */
 	useEffect(() => {
 		socket.emit("add_user", currentUserToken.user._id);
 
@@ -165,17 +165,20 @@ function Home() {
 			socket.off("receive_message");
 		};
 	}, [chatHistory]);
+	/* eslint-enable react-hooks/exhaustive-deps */
 
 	return (
 		<div className='home-page'>
 			<div className='container-nav'>
 				<h1 className='heading-big'>Pixel Chat</h1>
-				{user._id && <button
-					className='links'
-					onClick={() => goTo("/profile", { state: user })}
-				>
-					Profile
-				</button>}
+				{user._id && (
+					<button
+						className='links'
+						onClick={() => goTo("/profile", { state: user })}
+					>
+						Profile
+					</button>
+				)}
 			</div>
 			<div className='container-home-feed'>
 				<Contacts
