@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ChatInput, SignOut, Contacts, Welcome } from "../../components";
 import {
 	messageRoute,
 	allMessagesRoute,
 	contactRoute,
 } from "../../utils/apiRoutes";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ChatInput, SignOut, Contacts, Welcome } from "../../components";
 import { swearWords } from "../../utils/notifications";
 import axios from "axios";
 import "../../App.css";
@@ -14,15 +14,13 @@ const socket = io.connect("http://localhost:8080");
 // const socket = io.connect("https://socket-chat-node.onrender.com");
 
 function Home() {
+	const currentUserToken = JSON.parse(localStorage.getItem("jwtToken"));
 	const [messageData, setMessageData] = useState({
 		mes: "",
 		gif: "",
 		time: "",
 	});
 	const [chatHistory, setChatHistory] = useState([]);
-	const [currentUserToken, setCurrentUserToken] = useState(
-		JSON.parse(localStorage.getItem("jwtToken"))
-	);
 	const [user, setUser] = useState("");
 	const [selectedContact, setSelectedContact] = useState("");
 	const goTo = useNavigate();
@@ -52,7 +50,6 @@ function Home() {
 		const cleanMessage = badWord(messageData.mes);
 
 		if (messageData.mes !== "") {
-			console.log(cleanMessage);
 
 			await socket.emit("send_message", {
 				secondaryId: messageId,
@@ -125,7 +122,7 @@ function Home() {
 
 		getUser();
 		getMessageHistory();
-	}, [selectedContact, currentUserToken]);
+	}, [selectedContact]);
 
 	// Socket event listener functionality
 	useEffect(() => {
@@ -173,12 +170,12 @@ function Home() {
 		<div className='home-page'>
 			<div className='container-nav'>
 				<h1 className='heading-big'>Pixel Chat</h1>
-				<button
+				{user._id && <button
 					className='links'
 					onClick={() => goTo("/profile", { state: user })}
 				>
 					Profile
-				</button>
+				</button>}
 			</div>
 			<div className='container-home-feed'>
 				<Contacts

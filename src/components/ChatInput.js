@@ -140,7 +140,7 @@ export default function ChatInput(props) {
 		if (messagesLoaded) {
 			messageEnd.current.scrollIntoView(false, { behavior: "smooth" });
 		}
-	}, [messagesFeed]);
+	}, [props.messageHistory]);
 
 	return (
 		<div className='container-chat'>
