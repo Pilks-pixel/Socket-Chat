@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import {Home, Login, Register, SetAvatar} from './pages'
+import {Home, Login, Register, Profile} from './pages'
 import {PrivateRoute, PublicRoutes} from './components'
 import './App.css';
 
@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
-            <Route path="/avatar" element={<SetAvatar />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
           <Route element={<PublicRoutes/>}>
             <Route path="/login" element={<Login />} />
