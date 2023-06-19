@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FaGrinSquint } from "react-icons/fa";
 import axios from "axios";
@@ -15,7 +14,7 @@ export default function Emoji({
 	emojiHistory,
 	setEmojiHistory,
 }) {
-
+	// Like or Laugh on a post from another user
 	const addEmoji = async e => {
 		const firstWord = e.currentTarget.className.split(" ")[0];
 
@@ -50,8 +49,8 @@ export default function Emoji({
 				likeStatus: likeEmoji,
 				laughStatus: laughEmoji,
 			});
-			
-			res.status(200)
+
+			res.status(200);
 		} catch (err) {
 			console.error(err);
 		}
