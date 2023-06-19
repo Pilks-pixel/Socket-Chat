@@ -147,7 +147,7 @@ export default function ChatInput(props) {
 
 	return (
 		<div className='container-chat'>
-			<div className='chat-header'>
+			<div className='font-display text-xl font-semibold'>
 				<p> Chatting with {username}</p>
 				{isAvatarImageSet && (
 					<img className='chat-avatar' src={avatarImage} alt='avatar' />
@@ -158,7 +158,7 @@ export default function ChatInput(props) {
 					{messagesLoaded ? (
 						messagesFeed
 					) : (
-						<h2 className='heading-big'>Let's chat!</h2>
+						<h2 className='font-display text-3xl font-semibold m-3'>Let's chat!</h2>
 					)}
 				</div>
 			</div>

@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600&family=Poppins:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+    .contact-card {
+        @apply bg-stone-50 rounded-lg shadow-lg cursor-pointer w-min_func mx-auto p-2
+    }
+
+    .contact-card-selected {
+        @apply bg-headings-purple rounded-lg shadow-lg
+    }
+}

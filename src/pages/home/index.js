@@ -9,9 +9,10 @@ import { ChatInput, SignOut, Contacts, Welcome } from "../../components";
 import { swearWords } from "../../utils/notifications";
 import axios from "axios";
 import "../../App.css";
+import '../../index.css'
 import io from "socket.io-client";
-// const socket = io.connect("http://localhost:8080");
-const socket = io.connect("https://socket-chat-node.onrender.com");
+const socket = io.connect("http://localhost:8080");
+// const socket = io.connect("https://socket-chat-node.onrender.com");
 
 function Home() {
 	const currentUserToken = JSON.parse(localStorage.getItem("jwtToken"));
@@ -170,16 +171,17 @@ function Home() {
 	return (
 		<div className='home-page'>
 			<div className='container-nav'>
-				<h1 className='heading-big'>Pixel Chat</h1>
+				<h1 className='font-display font-semibold text-4xl uppercase m-8'>Pixel Chat</h1>
 				{user._id && (
 					<button
-						className='links'
+						className='font-display text-xs uppercase'
 						onClick={() => goTo("/profile", { state: user })}
 					>
 						Profile
 					</button>
 				)}
 			</div>
+
 			<div className='container-home-feed'>
 				<Contacts
 					showContact={handleChatChange}

@@ -12,9 +12,9 @@ function Welcome(props) {
 	let greeting = time > 16 ? evening : time > 11 ? afternoon : morning;
 
 	return (
-		<div className="container-welcome">
-			<h2 className='heading-big'>{`${greeting} ${username}`}</h2>
-			<p>Choose someone to chat with..</p>
+		<div className="flex flex-col justify-center flex-auto p-5 m-2 overflow-auto bg-gray-200 rounded-xl">
+			<h2 className='font-display text-4xl font-semibold text-headings-purple m-4'>{`${greeting} ${username}`}</h2>
+			<p className="text-base font-normal">Choose someone to chat with..</p>
 		</div>
 	);
 }
