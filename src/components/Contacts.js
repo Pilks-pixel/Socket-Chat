@@ -8,6 +8,7 @@ function Contacts(props) {
 	const [contactData, setContactData] = useState([]);
 	const { username, avatarImage, isAvatarImageSet } = props.currentUser;
 
+	/* eslint-disable react-hooks/exhaustive-deps */
 	useEffect(() => {
 		const { user, accessToken } = props.token;
 
@@ -19,6 +20,8 @@ function Contacts(props) {
 
 		getContacts();
 	}, [props.currentUser]);
+	/* eslint-enable react-hooks/exhaustive-deps */
+
 
 	let showAllContacts = contactData.map((contact, index) => {
 		return (

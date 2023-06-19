@@ -49,6 +49,7 @@ export default function ChatInput(props) {
 		getGifs();
 	}, []);
 
+	/* eslint-disable react-hooks/exhaustive-deps */
 	useEffect(() => {
 		if (gifData.length > 0) {
 			const randomGifs = [];
@@ -141,6 +142,8 @@ export default function ChatInput(props) {
 			messageEnd.current.scrollIntoView(false, { behavior: "smooth" });
 		}
 	}, [props.messageHistory]);
+	/* eslint-enable react-hooks/exhaustive-deps */
+
 
 	return (
 		<div className='container-chat'>
