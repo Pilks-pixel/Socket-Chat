@@ -52,6 +52,7 @@ function Profile() {
 	};
 
 	const dialog = ref.current;
+	/* eslint-disable react-hooks/exhaustive-deps */
 	useEffect(() => {
 		if (displayDeleteModal) {
 			dialog.showModal();
@@ -63,6 +64,7 @@ function Profile() {
 			};
 		}
 	}, [displayDeleteModal]);
+	/* eslint-enable react-hooks/exhaustive-deps */
 
 	return (
 		<div className='container'>
