@@ -9,7 +9,7 @@ function App() {
 
 
   return (
-    <div className="font-body text-center">
+    <div>
         <Routes>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />

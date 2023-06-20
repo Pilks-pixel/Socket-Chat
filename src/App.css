@@ -14,7 +14,7 @@ Layout
   margin: 2rem;
 }
 
-.container-home-feed {
+/* .container-home-feed {
   margin: auto;
   width: 90%;
   display: flex;
@@ -22,7 +22,7 @@ Layout
   border: red 1px solid;
   overflow: auto;
 
-}
+} */
 
 .container-chat,
 .container-welcome {

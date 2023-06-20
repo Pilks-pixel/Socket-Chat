@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    body {
+        @apply font-body text-center bg-gray-900;
+    }
+}
+
 @layer components {
         
 	.contact-card {
@@ -13,4 +19,8 @@
 	.contact-card-selected {
 		@apply bg-headings-purple text-stone-50 transition-colors;
 	}
+
+    .chat-feed {
+        @apply flex flex-col justify-center flex-auto p-5 m-2 overflow-auto rounded-xl;
+    }
 }

@@ -12,7 +12,7 @@ function Welcome(props) {
 	let greeting = time > 16 ? evening : time > 11 ? afternoon : morning;
 
 	return (
-		<div className="flex flex-col justify-center flex-auto p-5 m-2 overflow-auto bg-gray-200 rounded-xl">
+		<div className="chat-feed bg-gray-200">
 			<h2 className='font-display text-clamp font-semibold text-headings-purple m-4'>{`${greeting} ${username}`}</h2>
 			<p className="text-base font-normal">Choose someone to chat with..</p>
 		</div>

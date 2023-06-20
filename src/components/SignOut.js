@@ -11,8 +11,7 @@ export const SignOut = props => {
 	}
 
 	return (
-		<div>
-			<button className="py-2 px-4 rounded-full shadow bg-gray-50 hover:bg-gray-200 transition-colors" onClick={handleSignOut}>Sign Out</button>
-		</div>
+			<button className=" absolute top-0 right-0 py-2 px-4 rounded-full shadow bg-gray-200 hover:bg-stone-50 transition-colors" onClick={handleSignOut}>Sign Out</button>
+		
 	);
 };
