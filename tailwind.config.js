@@ -10,7 +10,7 @@ module.exports = {
         'body': ['Poppins'],
       },
       fontSize: {
-        clamp: "clamp(1rem, 5vw, 3rem)",
+        clamp: "clamp(1.5rem, 5vw, 2.25rem)",
       },
       colors: {
         'headings-purple': '#5B60CD',

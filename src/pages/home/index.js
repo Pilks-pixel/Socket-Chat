@@ -174,10 +174,10 @@ function Home() {
 				<h1 className='font-display font-semibold text-4xl uppercase m-8'>Pixel Chat</h1>
 				{user._id && (
 					<button
-						className='font-display text-xs uppercase'
+						className='font-display text-xs uppercase tracking-wider py-2 px-4 rounded-full hover:shadow hover:bg-gray-200 transition-all'
 						onClick={() => goTo("/profile", { state: user })}
 					>
-						Profile
+						Go to Profile
 					</button>
 				)}
 			</div>

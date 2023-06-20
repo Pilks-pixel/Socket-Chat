@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600&family=Poppins:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600&family=Poppins:wght@400;500&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
+        
+	.contact-card {
+		@apply bg-stone-50 w-min_func mx-auto p-2 flex gap-2 justify-center items-center rounded-lg shadow-lg border-solid border-2 hover:border-headings-purple focus:border-headings-purple transition-all;
+	}
 
-    .contact-card {
-        @apply bg-stone-50 rounded-lg shadow-lg cursor-pointer w-min_func mx-auto p-2
-    }
-
-    .contact-card-selected {
-        @apply bg-headings-purple rounded-lg shadow-lg
-    }
+	.contact-card-selected {
+		@apply bg-headings-purple text-stone-50 transition-colors;
+	}
 }

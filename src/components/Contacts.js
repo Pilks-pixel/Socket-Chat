@@ -27,31 +27,25 @@ function Contacts(props) {
 
 	let showAllContacts = contactData.map((contact, index) => {
 		return (
-			<div
-				className={
-					`${props.contact._id === contact._id
-						? "contact-card-selected"
-						: "contact-card"
-					}
-					`
-				}
+			<button
+				className={`contact-card ${props.contact._id === contact._id && "contact-card-selected"}`}
 				key={index}
 				onClick={() => props.showContact(contact)}
 				id={contact._id}
 			>
 				{contact.isAvatarImageSet && (
-					<img className='avatar' src={contact.avatarImage} alt='avatar' />
+					<img className='w-12 h-12 bg-inherit' src={contact.avatarImage} alt='avatar' />
 				)}
 				<span>{contact.username}</span>
-			</div>
+			</button>
 		);
 	});
 
 	return (
 		<div className='flex-auto font-medium text-sm capitalize m-2'>
-			<div className='bg-gray-200 rounded-lg mb-5'>
+			<div className='bg-gray-200 p-4 mb-5 flex justify-center items-center gap-2 rounded-lg'>
 				{isAvatarImageSet && (
-					<img className='avatar' src={avatarImage} alt='avatar' />
+					<img className=' w-16 h-16 bg-inherit' src={avatarImage} alt='avatar' />
 				)}
 				<h4>{username}</h4>
 			</div>
