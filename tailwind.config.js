@@ -18,6 +18,9 @@ module.exports = {
       width: {
         min_func: "min(100%, 350px)",
       },
+      backgroundImage: {
+        'hero-pattern': "url(./assets/pexels-jakub-novacek-924824.jpg)",
+      }
     },
   },
   plugins: [],

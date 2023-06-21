@@ -21,6 +21,6 @@
 	}
 
     .chat-feed {
-        @apply flex flex-col justify-center flex-auto p-5 m-2 overflow-auto rounded-xl;
+        @apply flex flex-col grow-[2] basis-96 m-2 min-h-full overflow-auto rounded-xl;
     }
 }

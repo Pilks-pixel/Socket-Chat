@@ -42,8 +42,8 @@ function Contacts(props) {
 	});
 
 	return (
-		<div className='font-medium text-sm capitalize flex-auto m-2 order-2'>
-			<div className='bg-gray-200 p-4 mb-5 flex justify-center items-center gap-2 rounded-lg'>
+		<div className='font-medium text-sm capitalize grow basis m-2 order-2'>
+			<div className='bg-gray-200 p-4 mb-5 max-h-[500px] flex justify-center items-center gap-2 rounded-lg overflow-auto'>
 				{isAvatarImageSet && (
 					<img className=' w-16 h-16 bg-inherit' src={avatarImage} alt='avatar' />
 				)}

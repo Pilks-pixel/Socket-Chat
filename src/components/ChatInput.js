@@ -2,9 +2,10 @@ import axios from "axios";
 import { React, useState, useEffect, useRef } from "react";
 import { Emoji } from ".";
 import { randomInt } from "../utils/notifications";
+import { FaPaperPlane } from "react-icons/fa";
 
 export default function ChatInput(props) {
-	const { username, avatarImage, isAvatarImageSet, _id } = props.contact;
+	const { _id } = props.contact;
 	const [messagesLoaded, setMessagesLoaded] = useState(false);
 	const messageEnd = useRef();
 	const [gifArray, setGifArray] = useState([]);
@@ -77,6 +78,7 @@ export default function ChatInput(props) {
 			<img
 				key={gif.keyId}
 				id={gif.id}
+				className='w-min rounded shadow-lg cursor-pointer'
 				src={gif.images.fixed_height_small.url}
 				alt='GIF'
 				onClick={e => selectGif(e)}
@@ -144,35 +146,50 @@ export default function ChatInput(props) {
 	}, [props.messageHistory]);
 	/* eslint-enable react-hooks/exhaustive-deps */
 
-
 	return (
-		<div className='chat-feed order-2'>
-			<div className='chat-body'>
-				<div className='container-messages' ref={messageEnd}>
-					{messagesLoaded ? (
-						messagesFeed
-					) : (
-						<h2 className='font-display text-3xl font-semibold m-3'>Let's chat!</h2>
-					)}
-				</div>
+		<div className='bg-hero-pattern chat-feed order-2 relative h-[500px] flex flex-col justify-between items-center overflow-auto'>
+			<div className='pt-2 px-2 flex flex-col gap-2' ref={messageEnd}>
+				{messagesLoaded ? (
+					messagesFeed
+				) : (
+					<h2 className='font-display text-3xl font-semibold m-3'>
+						Let's chat!
+					</h2>
+				)}
 			</div>
 
-			<form className='chat-footer'>
+			<form className='bg-white w-[70%] mb-2 p-2 rounded-md flex gap-3 justify-end items-center transition-colors'>
 				<input
+					className='w-full rounded-md'
 					placeholder='message...'
 					value={props.userData.mes}
 					name='mes'
 					onChange={handleInput}
 				/>
 
-				<div className='gif_dropdown'>
-					<div className='gif_dropdown__content'>{displayGifs && gifMenu}</div>
-					<button className='gif_dropdown__btn' onClick={gifToggle}>
-						Gif
+				<div className='self-end'>
+					<button
+						className={`font-extrabold uppercase tracking-wide p-1 border-2 rounded-full hover:bg-gray-200 hover:text-white ${
+							props.userData.gif.length > 0 && "text-green-400 border-green-400"
+						}`}
+						onClick={gifToggle}
+					>
+						gif
 					</button>
+					<div className={`${!displayGifs && "hidden"} bg-gray-200 absolute inset-x-0 p-1.5 flex flex-wrap gap-2 place-content-center z-1 shadow-lg rounded-md opacity-90`}
+					aria-expanded={displayGifs}
+					>
+						{displayGifs && gifMenu}
+					</div>
 				</div>
 
-				<button onClick={props.handleSend}>Send</button>
+				<button
+					onClick={props.handleSend}
+					className='bg-gray-500 p-2 border-2 rounded-full self-end hover:bg-gray-200'
+					aria-label='gif button'
+				>
+					<FaPaperPlane color='white' />
+				</button>
 			</form>
 		</div>
 	);
