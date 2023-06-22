@@ -16,7 +16,7 @@ module.exports = {
         'headings-purple': '#5B60CD',
       },
       width: {
-        min_func: "min(100%, 350px)",
+        min_func: "min(100%, 400px)",
       },
       backgroundImage: {
         'hero-pattern': "url(./assets/pexels-jakub-novacek-924824.jpg)",

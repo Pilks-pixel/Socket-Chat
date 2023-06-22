@@ -14,7 +14,7 @@ function Welcome(props) {
 	return (
 		<div className="chat-feed order-2 bg-gray-200">
 			<h2 className='font-display text-clamp font-semibold text-headings-purple m-4'>{`${greeting} ${username}`}</h2>
-			<p className="text-base font-normal">Choose someone to chat with..</p>
+			<p className="text-base font-normal mb-4">Choose someone to chat with..</p>
 		</div>
 	);
 }

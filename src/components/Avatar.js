@@ -7,12 +7,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser }) {
+function Avatar({
+	selectedAvatar,
+	setSelectedAvatar,
+	currentUser,
+	setCurrentUser,
+	setShowAvatars,
+}) {
 	const avatarUrl = "https://avatars.dicebear.com/api/pixel-art/";
 	const [newAvatarArray, setNewAvatarArray] = useState(false);
 	const [avatars, setAvatars] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-
 
 	// Avatar Select & Set Logic
 	const handleClick = e => {
@@ -65,6 +70,7 @@ function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser
 				console.log(err.message);
 			}
 		}
+		setShowAvatars(prevShowAvatar => !prevShowAvatar);
 	};
 
 	// Avatar generation
@@ -83,7 +89,6 @@ function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser
 			};
 			createAvatar();
 		}
-        console.log(avatarOptions);
 		setAvatars(avatarOptions);
 		setIsLoading(false);
 	}, [newAvatarArray]);
@@ -92,7 +97,9 @@ function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser
 		return (
 			<img
 				key={i}
-				className={selectedAvatar === a ? "selected-avatar" : "avatar"}
+				className={`${
+					selectedAvatar === a ? "selected-avatar" : "avatar"
+				} w-4/12 h-4/12 max-w-[100px] max-h-[100px]`}
 				src={a}
 				alt='user avatar option'
 				onClick={handleClick}
@@ -102,17 +109,30 @@ function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser
 
 	return (
 		<>
-			<div className='settings'>
-				<p>Choose an avatar</p>
-				<button onClick={genNewAvatars}>More Avatars</button>
-
+			<div className='relative w-[90%] mx-auto'>
 				{isLoading ? (
 					<p>Loading</p>
 				) : (
-					<div className='container-avatars'>{showAvatars}</div>
+					<div className='bg-slate-50 text-black absolute inset-x-0 max-w-2xl p-2 mx-auto mb-4 rounded-md shadow-lg'>
+						<div className=' flex flex-wrap gap-2 place-content-center z-1 mb-4 '>
+							{showAvatars}
+						</div>
+						<div className='mb-4'>
+							<button
+								className='btn-primary pb-2 mx-1.5 border-solid border-2 place-self-center hover:border-headings-purple focus:border-headings-purple transition-all'
+								onClick={genNewAvatars}
+							>
+								More Avatars
+							</button>
+							<button
+								className='btn-primary pb-2 mx-1.5 border-solid border-2 place-self-center hover:border-headings-purple focus:border-headings-purple transition-all'
+								onClick={handleSetNewAvatar}
+							>
+								Set Avatar
+							</button>
+						</div>
+					</div>
 				)}
-
-				<button onClick={handleSetNewAvatar}>Set Avatar</button>
 			</div>
 
 			<ToastContainer />

@@ -170,13 +170,13 @@ function Home() {
 
 	return (
 		<>
-			<h1 className='font-display font-semibold text-4xl uppercase text-white my-[10vh]'>
+			<h1 className='font-display font-semibold text-4xl uppercase text-white mt-[10vh] mb-[14vh]'>
 				Pixel Chat
 			</h1>
 			<div className='relative w-[90%] max-w-4xl mx-auto'>
 				{user._id && (
 					<button
-						className='font-display text-xs uppercase text-white tracking-wider absolute bottom-0 left-0 py-2 px-4 mb-4 rounded-full hover:shadow hover:bg-gray-200 hover:text-black transition-all'
+						className='absolute bottom-0 left-0 btn-secondary'
 						onClick={() => goTo("/profile", { state: user })}
 					>
 						Go to Profile
@@ -184,7 +184,7 @@ function Home() {
 				)}
 			</div>
 
-			<div className=' bg-stone-50 w-[90%] max-w-4xl mx-auto my-5 p-[2%] flex flex-wrap rounded-lg'>
+			<div className='bg-stone-50 w-[90%] max-w-4xl mx-auto my-5 p-[2%] flex flex-wrap rounded-lg'>
 				<Contacts
 					showContact={handleChatChange}
 					contact={selectedContact}
