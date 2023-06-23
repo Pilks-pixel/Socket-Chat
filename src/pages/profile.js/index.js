@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Avatar } from "../../components";
 import { contactRoute, deleteMessagesRoute } from "../../utils/apiRoutes";
+import { ToastContainer } from "react-toastify";
 import "../../App.css";
 import "../register/register.css";
 import axios from "axios";
@@ -125,9 +126,12 @@ function Profile() {
 				</button>
 			</dialog>
 
-			<button className='btn-secondaryl'>
+			<button className='btn-secondary'>
 				<Link to='/'>Go to Chat</Link>
 			</button>
+
+			<ToastContainer />
+
 		</div>
 	);
 }

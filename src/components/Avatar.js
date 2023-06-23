@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "../App.css";
 import { setAvatarRoute } from "../utils/apiRoutes";
 import { toastWarning, toastSucess, randomInt } from "../utils/notifications";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
@@ -60,6 +60,7 @@ function Avatar({
 						user: user,
 					})
 				);
+				setShowAvatars(prevShowAvatar => !prevShowAvatar);
 			}
 		} catch (err) {
 			if (err instanceof noAvatarErr) {
@@ -69,8 +70,7 @@ function Avatar({
 				toast.warning(err.message, toastWarning);
 				console.log(err.message);
 			}
-		}
-		setShowAvatars(prevShowAvatar => !prevShowAvatar);
+		} 
 	};
 
 	// Avatar generation
@@ -135,7 +135,6 @@ function Avatar({
 				)}
 			</div>
 
-			<ToastContainer />
 		</>
 	);
 }
