@@ -170,7 +170,7 @@ function Home() {
 
 	return (
 		<>
-			<h1 className='font-display font-semibold text-4xl uppercase text-white mt-[10vh] mb-[14vh]'>
+			<h1 className='font-display font-semibold text-4xl tracking-wider uppercase text-white mt-[10vh] mb-[14vh]'>
 				Pixel Chat
 			</h1>
 			<div className='relative w-[90%] max-w-4xl mx-auto'>

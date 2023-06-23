@@ -70,7 +70,7 @@ function Avatar({
 				toast.warning(err.message, toastWarning);
 				console.log(err.message);
 			}
-		} 
+		}
 	};
 
 	// Avatar generation
@@ -95,15 +95,15 @@ function Avatar({
 
 	const showAvatars = avatars.map((a, i) => {
 		return (
-			<img
+			<button
 				key={i}
 				className={`${
-					selectedAvatar === a ? "selected-avatar" : "avatar"
+					selectedAvatar === a ? " bg-teal-200 border-solid border-2 border-headings-purple rounded" : "avatar"
 				} w-4/12 h-4/12 max-w-[100px] max-h-[100px]`}
-				src={a}
-				alt='user avatar option'
-				onClick={handleClick}
-			/>
+				aria-label='avatar option'
+			>
+				<img src={a} alt='user avatar option' onClick={handleClick} />
+			</button>
 		);
 	});
 
@@ -134,7 +134,6 @@ function Avatar({
 					</div>
 				)}
 			</div>
-
 		</>
 	);
 }

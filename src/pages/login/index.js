@@ -61,31 +61,55 @@ function Login(props) {
 	};
 
 	return (
-		<div className='container-register'>
-			<h3>login</h3>
+		<div className='text-white'>
+			<h3 className='font-display font-semibold text-3xl tracking-wider uppercase my-[10vh]'>
+				Pixel Chat
+			</h3>
 
-			<form onSubmit={handleSubmit} className='container-register-form'>
-				<input
-					type='text'
-					placeholder='name'
-					value={user.username}
-					name='username'
-					onChange={handleRegisterInput}
-				/>
+			<div className='text-black bg-stone-50 w-[90%] max-w-xl mx-auto my-5 p-[2%] rounded-lg'>
+				<h4 className='font-display font-semibold text-2xl capitalize'>
+					login
+				</h4>
 
-				<input
-					type='password'
-					placeholder='password'
-					value={user.password}
-					name='password'
-					onChange={handleRegisterInput}
-				/>
+				<form
+					onSubmit={handleSubmit}
+					className='bg-gray-200 w-[90%] max-w-4xl mx-auto my-5 p-4 flex flex-col justify-around items-center gap-4 shadow-md rounded-lg'
+				>
+					<input
+						className='rounded p-1.5 min-width-custom mt-3'
+						type='text'
+						placeholder='name'
+						value={user.username}
+						name='username'
+						onChange={handleRegisterInput}
+					/>
 
-				<input type='submit' value='Login' />
-			</form>
+					<input
+						className='rounded p-1.5 min-width-custom mb-3'
+						type='password'
+						placeholder='password'
+						value={user.password}
+						name='password'
+						onChange={handleRegisterInput}
+					/>
 
-			<span>Don't have an account?</span>
-			<Link to='/register'>Register</Link>
+					<input
+						className='btn-primary bg-headings-purple text-black'
+						type='submit'
+						value='Sign in'
+					/>
+				</form>
+			</div>
+
+			<span className='font-display text-lg font-semibold text-white m-1'>
+				Don't have an account?{" "}
+			</span>
+			<Link
+				className='font-display text-lg font-semibold text-headings-purple m-1 hover:text-xl transition-all'
+				to='/register'
+			>
+				Register
+			</Link>
 
 			<ToastContainer />
 		</div>

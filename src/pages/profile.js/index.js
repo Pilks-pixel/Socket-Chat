@@ -46,7 +46,7 @@ function Profile() {
 
 	// Modal Logic
 	const closeModal = e => {
-		if (e.target.className !== "btn--yes" && e.target.className !== "btn") {
+		if (e.target.id !== "modal_btn") {
 			dialog.close();
 			setDisplayDeleteModal(prevDeleteModal => !prevDeleteModal);
 		}
@@ -98,10 +98,11 @@ function Profile() {
 						Change Avatar
 					</button>
 					<button
+						id='modal_btn'
 						className='btn-primary border-solid border-2 hover:border-headings-purple focus:border-headings-purple transition-all'
-						onClick={() =>
-							setDisplayDeleteModal(prevDeleteModal => !prevDeleteModal)
-						}
+						onClick={() => {
+							setDisplayDeleteModal(prevDeleteModal => !prevDeleteModal);
+						}}
 					>
 						Delete Account
 					</button>
@@ -118,10 +119,10 @@ function Profile() {
 				/>
 			)}
 
-			<dialog ref={ref} className='modal' aria-modal='true' role='alertdialog'>
-				<h3>Are you sure you wish to delete your account?</h3>
-				<button className='btn--no'>no</button>
-				<button onClick={deleteUser} className='btn--yes'>
+			<dialog ref={ref} className=' text-lg p-3 shadow-xl border-solid border-4 border-headings-purple rounded-md ' aria-modal='true' role='alertdialog'>
+				<h3 className='mb-3' >Are you sure you wish to delete your account ?</h3>
+				<button className='btn-primary mx-3 rounded-md border-solid border-2 hover:border-green-500 focus:border-green-500'>no</button>
+				<button className='btn-primary mx-3 rounded-md border-solid border-2 hover:border-red-500 focus:border-red-500' onClick={deleteUser}>
 					Yes
 				</button>
 			</dialog>
@@ -131,7 +132,6 @@ function Profile() {
 			</button>
 
 			<ToastContainer />
-
 		</div>
 	);
 }

@@ -38,7 +38,6 @@ function Register() {
 					password: password,
 				});
 
-				// console.log(resp.data)
 				if (resp.data.status === true) {
 					toast.success("Account created!", toastSucess);
 					localStorage.setItem("jwtToken", JSON.stringify(resp.data));
@@ -68,49 +67,58 @@ function Register() {
 	};
 
 	return (
-		<div className='container-register'>
-			<h3>register</h3>
+		<div className='text-white'>
+			<h3 className='font-display font-semibold text-3xl tracking-wider uppercase my-[10vh]'>
+				Pixel Chat
+			</h3>
+			<div className='text-black bg-stone-50 w-[90%] max-w-xl mx-auto my-5 p-[2%] rounded-lg'>
+				<h3 className='font-display font-semibold text-2xl capitalize' >register</h3>
 
-			<form onSubmit={handleSubmit} className='container-register-form'>
-				<input
-					type='text'
-					placeholder='name'
-					value={user.username}
-					name='username'
-					onChange={handleRegisterInput}
-				/>
+				<form onSubmit={handleSubmit} className='bg-gray-200 w-[90%] max-w-4xl mx-auto my-5 p-4 flex flex-col justify-around items-center gap-4 shadow-md rounded-lg'>
+					<input
+						type='text'
+						placeholder='name'
+						value={user.username}
+						name='username'
+						onChange={handleRegisterInput}
+						className='rounded p-1.5 min-width-custom mt-3'
+					/>
 
-				<input
-					type='email'
-					placeholder='email'
-					value={user.email}
-					name='email'
-					onChange={handleRegisterInput}
-				/>
+					<input
+						type='email'
+						placeholder='email'
+						value={user.email}
+						name='email'
+						onChange={handleRegisterInput}
+						className='rounded p-1.5 min-width-custom'
+					/>
 
-				<input
-					type='password'
-					placeholder='password'
-					value={user.password}
-					name='password'
-					onChange={handleRegisterInput}
-				/>
+					<input
+						type='password'
+						placeholder='password'
+						value={user.password}
+						name='password'
+						onChange={handleRegisterInput}
+						className='rounded p-1.5 min-width-custom'
+					/>
 
-				<input
-					type='password'
-					placeholder='confirm password'
-					value={user.confirmPassword}
-					name='confirmPassword'
-					onChange={handleRegisterInput}
-				/>
+					<input
+						type='password'
+						placeholder='confirm password'
+						value={user.confirmPassword}
+						name='confirmPassword'
+						onChange={handleRegisterInput}
+						className='rounded p-1.5 min-width-custom mb-3'
+					/>
 
-				<input type='submit' value='Register' />
-			</form>
+					<input type='submit' value='Register' className='btn-primary bg-headings-purple text-black' />
+				</form>
 
-			<span>Already have an account?</span>
-			<Link to='/login'>Login</Link>
 
-			<ToastContainer />
+				<ToastContainer />
+			</div>
+				<span className='font-display text-lg font-semibold text-white m-1'>Already have an account? </span>
+				<Link className='font-display text-lg font-semibold text-headings-purple m-1 hover:text-xl transition-all' to='/login'>Login</Link>
 		</div>
 	);
 }
