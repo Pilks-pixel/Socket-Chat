@@ -28,12 +28,17 @@
 	}
 
 	.btn-secondary {
-        @apply font-display text-xs uppercase text-white tracking-wider md:text-base py-2 px-4 mb-4 rounded-full hover:shadow hover:bg-gray-200 hover:text-black transition-all;
+		@apply font-display text-xs uppercase text-white tracking-wider md:text-base py-2 px-4 mb-4 rounded-full hover:shadow hover:bg-gray-200 hover:text-black transition-all;
 	}
 }
 
-@layer utilities{
-    .min-width-custom {
-        min-width: min(275px, 80%);
-      }
+@layer utilities {
+	.min-width-custom {
+		min-width: min(275px, 80%);
+	}
+
+	.bg-glass {
+		background-color: rgba(255, 255, 255, 0.25);
+		backdrop-filter: blur(10px);
+	}
 }

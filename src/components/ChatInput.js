@@ -107,12 +107,14 @@ export default function ChatInput(props) {
 			<div
 				className={
 					obj.fromSender
-						? "container-chat-content-sent"
-						: "container-chat-content-received"
+						? "  bg-glass min-width-custom p-1.5 mb-4 rounded-md self-end"
+						: "  bg-glass min-width-custom p-1.5 mb-4 rounded-md self-start"
 				}
 				key={index}
 			>
-				<div className='container-chat__info'>
+				<div className='flex justify-between mb-2'>
+					<span>{obj.timeStamp}</span>
+
 					{(!obj.fromSender || obj.likeStatus || obj.laughStatus) && (
 						<Emoji
 							id={obj.messageId}
@@ -125,15 +127,14 @@ export default function ChatInput(props) {
 							setEmojiHistory={props.setMessageHistory}
 						/>
 					)}
-					<span>{obj.timeStamp}</span>
 				</div>
 
 				{obj.gif && (
-					<video controls className='gif_image'>
+					<video controls className=' max-w-[275px] mb-3'>
 						<source src={obj.gif} type='video/mp4' />
 					</video>
 				)}
-				<p>{obj.message}</p>
+				<p className='mb-3'>{obj.message}</p>
 			</div>
 		);
 	});
@@ -147,7 +148,7 @@ export default function ChatInput(props) {
 	/* eslint-enable react-hooks/exhaustive-deps */
 
 	return (
-		<div className='bg-hero-pattern chat-feed order-2 relative h-[500px] flex flex-col justify-between items-center overflow-auto'>
+		<div className='text-white bg-hero-pattern chat-feed order-2 relative h-[500px] flex flex-col justify-between overflow-auto'>
 			<div className='pt-2 px-2 flex flex-col gap-2' ref={messageEnd}>
 				{messagesLoaded ? (
 					messagesFeed
@@ -158,7 +159,7 @@ export default function ChatInput(props) {
 				)}
 			</div>
 
-			<form className='bg-white w-[70%] mb-2 p-2 rounded-md flex gap-3 justify-end items-center transition-colors'>
+			<form className=' text-black bg-white w-[70%] mb-2 p-2 rounded-md self-center flex gap-3 justify-end items-center transition-colors'>
 				<input
 					className='w-full rounded-md'
 					placeholder='message...'
@@ -183,13 +184,13 @@ export default function ChatInput(props) {
 					</div>
 				</div>
 
-				<button
+				{props.userData.mes && <button
 					onClick={props.handleSend}
 					className='bg-gray-500 p-2 border-2 rounded-full self-end hover:bg-gray-200'
-					aria-label='gif button'
+					aria-label='send button'
 				>
 					<FaPaperPlane color='white' />
-				</button>
+				</button>}
 			</form>
 		</div>
 	);

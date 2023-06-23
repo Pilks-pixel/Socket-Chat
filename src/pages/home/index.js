@@ -209,7 +209,7 @@ function Home() {
 
 				{selectedContact && (
 					<div className='font-display text-xl font-semibold hidden md:block md:mb-2 md:flex md:items-center md:basis-full md:order-1 md:justify-end'>
-						<p> Chatting with {selectedContact.username}</p>
+						<p className='mx-1.5'> Chatting with {selectedContact.username}</p>
 						{selectedContact.isAvatarImageSet && (
 							<img
 								className='w-7 h-7 bg-inherit'
