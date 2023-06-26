@@ -1,18 +1,22 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import "../App.css";
 import { setAvatarRoute } from "../utils/apiRoutes";
 import { toastWarning, toastSucess, randomInt } from "../utils/notifications";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser }) {
+function Avatar({
+	selectedAvatar,
+	setSelectedAvatar,
+	currentUser,
+	setCurrentUser,
+	setShowAvatars,
+}) {
 	const avatarUrl = "https://avatars.dicebear.com/api/pixel-art/";
 	const [newAvatarArray, setNewAvatarArray] = useState(false);
 	const [avatars, setAvatars] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-
 
 	// Avatar Select & Set Logic
 	const handleClick = e => {
@@ -55,6 +59,7 @@ function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser
 						user: user,
 					})
 				);
+				setShowAvatars(prevShowAvatar => !prevShowAvatar);
 			}
 		} catch (err) {
 			if (err instanceof noAvatarErr) {
@@ -83,39 +88,51 @@ function Avatar({ selectedAvatar, setSelectedAvatar, currentUser, setCurrentUser
 			};
 			createAvatar();
 		}
-        console.log(avatarOptions);
 		setAvatars(avatarOptions);
 		setIsLoading(false);
 	}, [newAvatarArray]);
 
 	const showAvatars = avatars.map((a, i) => {
 		return (
-			<img
+			<button
 				key={i}
-				className={selectedAvatar === a ? "selected-avatar" : "avatar"}
-				src={a}
-				alt='user avatar option'
-				onClick={handleClick}
-			/>
+				className={`${
+					selectedAvatar === a ? " bg-teal-200 border-solid border-2 border-headings-purple rounded" : "avatar"
+				} w-4/12 h-4/12 max-w-[100px] max-h-[100px]`}
+				aria-label='avatar option'
+			>
+				<img src={a} alt='user avatar option' onClick={handleClick} />
+			</button>
 		);
 	});
 
 	return (
 		<>
-			<div className='settings'>
-				<p>Choose an avatar</p>
-				<button onClick={genNewAvatars}>More Avatars</button>
-
+			<div className='relative w-[90%] mx-auto mb-10'>
 				{isLoading ? (
 					<p>Loading</p>
 				) : (
-					<div className='container-avatars'>{showAvatars}</div>
+					<div className='bg-slate-50 text-black absolute inset-x-0 h-max max-w-2xl p-2 mx-auto mb-6 rounded-md shadow-lg'>
+						<div className=' flex flex-wrap gap-2 place-content-center z-1 mb-4 '>
+							{showAvatars}
+						</div>
+						<div className='flex flex-wrap gap-2 justify-center items-center mb-4'>
+							<button
+								className='btn-primary py-2 border-solid border-2 place-self-center hover:border-headings-purple focus:border-headings-purple transition-all'
+								onClick={genNewAvatars}
+							>
+								More Avatars
+							</button>
+							<button
+								className='btn-primary py-2 border-solid border-2 place-self-center hover:border-headings-purple focus:border-headings-purple transition-all'
+								onClick={handleSetNewAvatar}
+							>
+								Set Avatar
+							</button>
+						</div>
+					</div>
 				)}
-
-				<button onClick={handleSetNewAvatar}>Set Avatar</button>
 			</div>
-
-			<ToastContainer />
 		</>
 	);
 }

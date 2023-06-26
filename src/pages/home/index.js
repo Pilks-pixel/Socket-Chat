@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { ChatInput, SignOut, Contacts, Welcome } from "../../components";
 import { swearWords } from "../../utils/notifications";
 import axios from "axios";
-import "../../App.css";
+import "../../index.css";
 import io from "socket.io-client";
 // const socket = io.connect("http://localhost:8080");
 const socket = io.connect("https://socket-chat-node.onrender.com");
@@ -168,19 +168,22 @@ function Home() {
 	/* eslint-enable react-hooks/exhaustive-deps */
 
 	return (
-		<div className='home-page'>
-			<div className='container-nav'>
-				<h1 className='heading-big'>Pixel Chat</h1>
+		<>
+			<h1 className='font-display font-semibold text-4xl tracking-wider uppercase text-white mt-[10vh] mb-[14vh]'>
+				Pixel Chat
+			</h1>
+			<div className='relative w-[90%] max-w-4xl mx-auto'>
 				{user._id && (
 					<button
-						className='links'
+						className='absolute bottom-0 left-0 btn-secondary'
 						onClick={() => goTo("/profile", { state: user })}
 					>
-						Profile
+						Go to Profile
 					</button>
 				)}
 			</div>
-			<div className='container-home-feed'>
+
+			<div className='bg-stone-50 w-[90%] max-w-4xl mx-auto my-5 p-[2%] flex flex-wrap rounded-lg'>
 				<Contacts
 					showContact={handleChatChange}
 					contact={selectedContact}
@@ -202,11 +205,24 @@ function Home() {
 				) : (
 					<Welcome currentUser={currentUserToken} />
 				)}
+
+				{selectedContact && (
+					<div className='font-display text-xl font-semibold hidden md:block md:mb-2 md:flex md:items-center md:basis-full md:order-1 md:justify-end'>
+						<p className='mx-1.5'> Chatting with {selectedContact.username}</p>
+						{selectedContact.isAvatarImageSet && (
+							<img
+								className='w-7 h-7 bg-inherit'
+								src={selectedContact.avatarImage}
+								alt='avatar'
+							/>
+						)}
+					</div>
+				)}
 			</div>
-			<div className='container-footer'>
+			<div className='relative w-[90%] max-w-4xl mx-auto mb-10 p-[4%]'>
 				<SignOut socket={socket} currentUser={currentUserToken} />
 			</div>
-		</div>
+		</>
 	);
 }
 
