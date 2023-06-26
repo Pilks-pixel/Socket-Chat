@@ -75,14 +75,18 @@ export default function ChatInput(props) {
 
 	const gifMenu = gifArray.map(gif => {
 		return (
-			<img
-				key={gif.keyId}
-				id={gif.id}
-				className='w-min rounded shadow-lg cursor-pointer'
-				src={gif.images.fixed_height_small.url}
-				alt='GIF'
-				onClick={e => selectGif(e)}
-			/>
+			<button
+			key={gif.keyId}
+			id={gif.id}
+			onClick={e => selectGif(e)}
+			>
+				<img
+					className='w-min rounded shadow-lg'
+					alt='GIF'
+					src={gif.images.fixed_height_small.url}
+				/>
+
+			</button>
 		);
 	});
 
@@ -107,7 +111,7 @@ export default function ChatInput(props) {
 			<div
 				className={
 					obj.fromSender
-						? "  bg-glass min-width-custom p-1.5 mb-4 rounded-md self-end"
+						? "  bg-glass-purple min-width-custom p-1.5 mb-4 rounded-md self-end"
 						: "  bg-glass min-width-custom p-1.5 mb-4 rounded-md self-start"
 				}
 				key={index}
@@ -115,7 +119,6 @@ export default function ChatInput(props) {
 				<div className='flex justify-between mb-2'>
 					<span>{obj.timeStamp}</span>
 
-					{(!obj.fromSender || obj.likeStatus || obj.laughStatus) && (
 						<Emoji
 							id={obj.messageId}
 							likeEmoji={obj.likeStatus}
@@ -125,8 +128,9 @@ export default function ChatInput(props) {
 							UserToken={props.token}
 							emojiHistory={props.messageHistory}
 							setEmojiHistory={props.setMessageHistory}
+							sender={obj.fromSender}
 						/>
-					)}
+					
 				</div>
 
 				{obj.gif && (

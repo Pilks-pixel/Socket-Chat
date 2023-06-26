@@ -41,4 +41,8 @@
 		background-color: rgba(255, 255, 255, 0.25);
 		backdrop-filter: blur(10px);
 	}
+
+    .bg-glass-purple {
+		@apply bg-headings-purple backdrop-blur
+	}
 }
