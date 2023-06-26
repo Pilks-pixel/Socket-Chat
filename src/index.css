@@ -5,8 +5,12 @@
 @tailwind utilities;
 
 @layer base {
+    * {
+        @apply box-border
+    }
+
 	body {
-		@apply font-body text-center bg-gray-900;
+		@apply font-body text-center bg-gray-900 m-0;
 	}
 }
 
@@ -34,7 +38,7 @@
 
 @layer utilities {
 	.min-width-custom {
-		min-width: min(275px, 80%);
+		width: min(275px, 80%);
 	}
 
 	.bg-glass {

@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../../App.css";
-import "./register.css";
 import { registerRoute } from "../../utils/apiRoutes";
 import { ToastContainer, toast } from "react-toastify";
 import { toastSucess, toastWarning } from "../../utils/notifications";

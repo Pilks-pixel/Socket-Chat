@@ -7,7 +7,7 @@ import { FaPaperPlane } from "react-icons/fa";
 export default function ChatInput(props) {
 	const { _id } = props.contact;
 	const [messagesLoaded, setMessagesLoaded] = useState(false);
-	const messageEnd = useRef();
+	const messageEnd = useRef(null);
 	const [gifArray, setGifArray] = useState([]);
 	const [displayGifs, setdisplayGifs] = useState(false);
 	const [gifData, setGifData] = useState([]);
@@ -75,17 +75,13 @@ export default function ChatInput(props) {
 
 	const gifMenu = gifArray.map(gif => {
 		return (
-			<button
-			key={gif.keyId}
-			id={gif.id}
-			onClick={e => selectGif(e)}
-			>
+			<button key={gif.keyId} onClick={e => selectGif(e)}>
 				<img
+					id={gif.id}
 					className='w-min rounded shadow-lg'
 					alt='GIF'
 					src={gif.images.fixed_height_small.url}
 				/>
-
 			</button>
 		);
 	});
@@ -96,8 +92,9 @@ export default function ChatInput(props) {
 	};
 
 	const selectGif = e => {
+		e.preventDefault();
 		let gifId = gifArray.filter(g => g.id === e.target.id);
-
+		console.log(e.target);
 		props.setUserData({
 			...props.userData,
 			gif: gifId[0].images.looping.mp4,
@@ -119,22 +116,21 @@ export default function ChatInput(props) {
 				<div className='flex justify-between mb-2'>
 					<span>{obj.timeStamp}</span>
 
-						<Emoji
-							id={obj.messageId}
-							likeEmoji={obj.likeStatus}
-							laughEmoji={obj.laughStatus}
-							socket={props.socket}
-							selectedContactId={_id}
-							UserToken={props.token}
-							emojiHistory={props.messageHistory}
-							setEmojiHistory={props.setMessageHistory}
-							sender={obj.fromSender}
-						/>
-					
+					<Emoji
+						id={obj.messageId}
+						likeEmoji={obj.likeStatus}
+						laughEmoji={obj.laughStatus}
+						socket={props.socket}
+						selectedContactId={_id}
+						UserToken={props.token}
+						emojiHistory={props.messageHistory}
+						setEmojiHistory={props.setMessageHistory}
+						sender={obj.fromSender}
+					/>
 				</div>
 
 				{obj.gif && (
-					<video controls className=' max-w-[275px] mb-3'>
+					<video controls className='max-w-full mb-3'>
 						<source src={obj.gif} type='video/mp4' />
 					</video>
 				)}
@@ -146,14 +142,17 @@ export default function ChatInput(props) {
 	useEffect(() => {
 		messagesFeed.length ? setMessagesLoaded(true) : setMessagesLoaded(false);
 		if (messagesLoaded) {
-			messageEnd.current.scrollIntoView(false, { behavior: "smooth" });
+			messageEnd.current.scrollIntoView(false, {
+				behavior: "smooth",
+				block: "end",
+			});
 		}
-	}, [props.messageHistory]);
+	}, [messagesFeed]);
 	/* eslint-enable react-hooks/exhaustive-deps */
 
 	return (
 		<div className='text-white bg-hero-pattern chat-feed order-2 relative h-[500px] flex flex-col justify-between overflow-auto'>
-			<div className='pt-2 px-2 flex flex-col gap-2' ref={messageEnd}>
+			<div className='pt-2 px-2 flex flex-col gap-2'>
 				{messagesLoaded ? (
 					messagesFeed
 				) : (
@@ -163,7 +162,10 @@ export default function ChatInput(props) {
 				)}
 			</div>
 
-			<form className=' text-black bg-white w-[70%] mb-2 p-2 rounded-md self-center flex gap-3 justify-end items-center transition-colors'>
+			<form
+				ref={messageEnd}
+				className=' text-black bg-white w-[70%] mb-2 p-2 rounded-md self-center flex gap-3 justify-end items-center transition-colors'
+			>
 				<input
 					className='w-full rounded-md'
 					placeholder='message...'
@@ -181,20 +183,25 @@ export default function ChatInput(props) {
 					>
 						gif
 					</button>
-					<div className={`${!displayGifs && "hidden"} bg-gray-200 absolute inset-x-0 p-1.5 flex flex-wrap gap-2 place-content-center z-1 shadow-lg rounded-md opacity-90`}
-					aria-expanded={displayGifs}
+					<div
+						className={`${
+							!displayGifs && "hidden"
+						} bg-gray-200 absolute inset-x-0 p-1.5 flex flex-wrap gap-2 place-content-center z-1 shadow-lg rounded-md opacity-90`}
+						aria-expanded={displayGifs}
 					>
 						{displayGifs && gifMenu}
 					</div>
 				</div>
 
-				{props.userData.mes && <button
-					onClick={props.handleSend}
-					className='bg-gray-500 p-2 border-2 rounded-full self-end hover:bg-gray-200'
-					aria-label='send button'
-				>
-					<FaPaperPlane color='white' />
-				</button>}
+				{props.userData.mes && (
+					<button
+						onClick={props.handleSend}
+						className='bg-gray-500 p-2 border-2 rounded-full self-end hover:bg-gray-200'
+						aria-label='send button'
+					>
+						<FaPaperPlane color='white' />
+					</button>
+				)}
 			</form>
 		</div>
 	);

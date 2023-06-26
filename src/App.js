@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import {Home, Login, Register, Profile} from './pages'
 import {PrivateRoute, PublicRoutes} from './components'
-import './App.css';
 import './index.css';
 
 function App() {
@@ -9,7 +8,7 @@ function App() {
 
 
   return (
-    <div>
+    <div className='h-screen'>
         <Routes>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />

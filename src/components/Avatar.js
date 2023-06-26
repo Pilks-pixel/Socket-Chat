@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import "../App.css";
 import { setAvatarRoute } from "../utils/apiRoutes";
 import { toastWarning, toastSucess, randomInt } from "../utils/notifications";
 import { toast } from "react-toastify";
@@ -109,23 +108,23 @@ function Avatar({
 
 	return (
 		<>
-			<div className='relative w-[90%] mx-auto'>
+			<div className='relative w-[90%] mx-auto mb-10'>
 				{isLoading ? (
 					<p>Loading</p>
 				) : (
-					<div className='bg-slate-50 text-black absolute inset-x-0 max-w-2xl p-2 mx-auto mb-4 rounded-md shadow-lg'>
+					<div className='bg-slate-50 text-black absolute inset-x-0 h-max max-w-2xl p-2 mx-auto mb-6 rounded-md shadow-lg'>
 						<div className=' flex flex-wrap gap-2 place-content-center z-1 mb-4 '>
 							{showAvatars}
 						</div>
-						<div className='mb-4'>
+						<div className='flex flex-wrap gap-2 justify-center items-center mb-4'>
 							<button
-								className='btn-primary pb-2 mx-1.5 border-solid border-2 place-self-center hover:border-headings-purple focus:border-headings-purple transition-all'
+								className='btn-primary py-2 border-solid border-2 place-self-center hover:border-headings-purple focus:border-headings-purple transition-all'
 								onClick={genNewAvatars}
 							>
 								More Avatars
 							</button>
 							<button
-								className='btn-primary pb-2 mx-1.5 border-solid border-2 place-self-center hover:border-headings-purple focus:border-headings-purple transition-all'
+								className='btn-primary py-2 border-solid border-2 place-self-center hover:border-headings-purple focus:border-headings-purple transition-all'
 								onClick={handleSetNewAvatar}
 							>
 								Set Avatar

@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { ChatInput, SignOut, Contacts, Welcome } from "../../components";
 import { swearWords } from "../../utils/notifications";
 import axios from "axios";
-import "../../App.css";
 import "../../index.css";
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:8080");
