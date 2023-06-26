@@ -2,6 +2,8 @@ import axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 import { contactsRoute } from "../utils/apiRoutes";
+import '../index.css'
+
 
 function Contacts(props) {
 
@@ -25,34 +27,32 @@ function Contacts(props) {
 
 	let showAllContacts = contactData.map((contact, index) => {
 		return (
-			<div
-				className={
-					props.contact._id === contact._id
-						? "container-contact-item-selected"
-						: "container-contact-item"
-				}
+			<button
+				className={`contact-card ${props.contact._id === contact._id && "contact-card-selected"}`}
 				key={index}
 				onClick={() => props.showContact(contact)}
 				id={contact._id}
 			>
 				{contact.isAvatarImageSet && (
-					<img className='avatar' src={contact.avatarImage} alt='avatar' />
+					<img className='w-12 h-12 bg-inherit' src={contact.avatarImage} alt='avatar' />
 				)}
 				<span>{contact.username}</span>
-			</div>
+			</button>
 		);
 	});
 
 	return (
-		<div className='container-contacts'>
-			<div className='container-contact-current-user'>
+		<div className='font-medium text-sm capitalize grow basis m-2 order-2'>
+			<div className='bg-gray-200 p-4 mb-5 max-h-[500px] flex justify-center items-center gap-2 rounded-lg overflow-auto'>
 				{isAvatarImageSet && (
-					<img className='avatar' src={avatarImage} alt='avatar' />
+					<img className=' w-16 h-16 bg-inherit' src={avatarImage} alt='avatar' />
 				)}
 				<h4>{username}</h4>
 			</div>
-			<h3 className="heading-big">Contacts</h3>
+			<div className="bg-gray-200 rounded-xl p-2 flex flex-col gap-y-2.5 place-content-center">
+			<h3 className="font-display text-lg m-3">Contacts</h3>
 			{showAllContacts}
+			</div>
 		</div>
 	);
 }

@@ -2,11 +2,12 @@ import axios from "axios";
 import { React, useState, useEffect, useRef } from "react";
 import { Emoji } from ".";
 import { randomInt } from "../utils/notifications";
+import { FaPaperPlane } from "react-icons/fa";
 
 export default function ChatInput(props) {
-	const { username, avatarImage, isAvatarImageSet, _id } = props.contact;
+	const { _id } = props.contact;
 	const [messagesLoaded, setMessagesLoaded] = useState(false);
-	const messageEnd = useRef();
+	const messageEnd = useRef(null);
 	const [gifArray, setGifArray] = useState([]);
 	const [displayGifs, setdisplayGifs] = useState(false);
 	const [gifData, setGifData] = useState([]);
@@ -74,13 +75,14 @@ export default function ChatInput(props) {
 
 	const gifMenu = gifArray.map(gif => {
 		return (
-			<img
-				key={gif.keyId}
-				id={gif.id}
-				src={gif.images.fixed_height_small.url}
-				alt='GIF'
-				onClick={e => selectGif(e)}
-			/>
+			<button key={gif.keyId} onClick={e => selectGif(e)}>
+				<img
+					id={gif.id}
+					className='w-min rounded shadow-lg'
+					alt='GIF'
+					src={gif.images.fixed_height_small.url}
+				/>
+			</button>
 		);
 	});
 
@@ -90,8 +92,9 @@ export default function ChatInput(props) {
 	};
 
 	const selectGif = e => {
+		e.preventDefault();
 		let gifId = gifArray.filter(g => g.id === e.target.id);
-
+		console.log(e.target);
 		props.setUserData({
 			...props.userData,
 			gif: gifId[0].images.looping.mp4,
@@ -105,33 +108,33 @@ export default function ChatInput(props) {
 			<div
 				className={
 					obj.fromSender
-						? "container-chat-content-sent"
-						: "container-chat-content-received"
+						? "  bg-glass-purple min-width-custom p-1.5 mb-4 rounded-md self-end"
+						: "  bg-glass min-width-custom p-1.5 mb-4 rounded-md self-start"
 				}
 				key={index}
 			>
-				<div className='container-chat__info'>
-					{(!obj.fromSender || obj.likeStatus || obj.laughStatus) && (
-						<Emoji
-							id={obj.messageId}
-							likeEmoji={obj.likeStatus}
-							laughEmoji={obj.laughStatus}
-							socket={props.socket}
-							selectedContactId={_id}
-							UserToken={props.token}
-							emojiHistory={props.messageHistory}
-							setEmojiHistory={props.setMessageHistory}
-						/>
-					)}
+				<div className='flex justify-between mb-2'>
 					<span>{obj.timeStamp}</span>
+
+					<Emoji
+						id={obj.messageId}
+						likeEmoji={obj.likeStatus}
+						laughEmoji={obj.laughStatus}
+						socket={props.socket}
+						selectedContactId={_id}
+						UserToken={props.token}
+						emojiHistory={props.messageHistory}
+						setEmojiHistory={props.setMessageHistory}
+						sender={obj.fromSender}
+					/>
 				</div>
 
 				{obj.gif && (
-					<video controls className='gif_image'>
+					<video controls className='max-w-full mb-3'>
 						<source src={obj.gif} type='video/mp4' />
 					</video>
 				)}
-				<p>{obj.message}</p>
+				<p className='mb-3'>{obj.message}</p>
 			</div>
 		);
 	});
@@ -139,46 +142,66 @@ export default function ChatInput(props) {
 	useEffect(() => {
 		messagesFeed.length ? setMessagesLoaded(true) : setMessagesLoaded(false);
 		if (messagesLoaded) {
-			messageEnd.current.scrollIntoView(false, { behavior: "smooth" });
+			messageEnd.current.scrollIntoView(false, {
+				behavior: "smooth",
+				block: "end",
+			});
 		}
-	}, [props.messageHistory]);
+	}, [messagesFeed]);
 	/* eslint-enable react-hooks/exhaustive-deps */
 
-
 	return (
-		<div className='container-chat'>
-			<div className='chat-header'>
-				<p> Chatting with {username}</p>
-				{isAvatarImageSet && (
-					<img className='chat-avatar' src={avatarImage} alt='avatar' />
+		<div className='text-white bg-hero-pattern chat-feed order-2 relative h-[500px] flex flex-col justify-between overflow-auto'>
+			<div className='pt-2 px-2 flex flex-col gap-2'>
+				{messagesLoaded ? (
+					messagesFeed
+				) : (
+					<h2 className='font-display text-3xl font-semibold m-3'>
+						Let's chat!
+					</h2>
 				)}
 			</div>
-			<div className='chat-body'>
-				<div className='container-messages' ref={messageEnd}>
-					{messagesLoaded ? (
-						messagesFeed
-					) : (
-						<h2 className='heading-big'>Let's chat!</h2>
-					)}
-				</div>
-			</div>
 
-			<form className='chat-footer'>
+			<form
+				ref={messageEnd}
+				className=' text-black bg-white w-[70%] mb-2 p-2 rounded-md self-center flex gap-3 justify-end items-center transition-colors'
+			>
 				<input
+					className='w-full rounded-md'
 					placeholder='message...'
 					value={props.userData.mes}
 					name='mes'
 					onChange={handleInput}
 				/>
 
-				<div className='gif_dropdown'>
-					<div className='gif_dropdown__content'>{displayGifs && gifMenu}</div>
-					<button className='gif_dropdown__btn' onClick={gifToggle}>
-						Gif
+				<div className='self-end'>
+					<button
+						className={`font-extrabold uppercase tracking-wide p-1 border-2 rounded-full hover:bg-gray-200 hover:text-white ${
+							props.userData.gif.length > 0 && "text-green-400 border-green-400"
+						}`}
+						onClick={gifToggle}
+					>
+						gif
 					</button>
+					<div
+						className={`${
+							!displayGifs && "hidden"
+						} bg-gray-200 absolute inset-x-0 p-1.5 flex flex-wrap gap-2 place-content-center z-1 shadow-lg rounded-md opacity-90`}
+						aria-expanded={displayGifs}
+					>
+						{displayGifs && gifMenu}
+					</div>
 				</div>
 
-				<button onClick={props.handleSend}>Send</button>
+				{props.userData.mes && (
+					<button
+						onClick={props.handleSend}
+						className='bg-gray-500 p-2 border-2 rounded-full self-end hover:bg-gray-200'
+						aria-label='send button'
+					>
+						<FaPaperPlane color='white' />
+					</button>
+				)}
 			</form>
 		</div>
 	);

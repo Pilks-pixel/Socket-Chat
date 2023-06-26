@@ -13,44 +13,43 @@ export default function Emoji({
 	UserToken,
 	emojiHistory,
 	setEmojiHistory,
+	sender,
 }) {
 	// Like or Laugh on a post from another user
 	const addEmoji = async e => {
-		const firstWord = e.currentTarget.className.split(" ")[0];
-
-		if (firstWord === "content__like") {
-			likeEmoji = true;
-		} else if (firstWord === "content__laugh") {
-			laughEmoji = true;
-		}
-
-		await socket.emit("update_message", {
-			from: UserToken.user._id,
-			to: selectedContactId,
-			messageId: id,
-			likeStatus: likeEmoji,
-			laughStatus: laughEmoji,
-		});
-
-		const updatedArr = emojiHistory.map(msg => {
-			return msg.messageId === id
-				? {
-						...msg,
-						likeStatus: likeEmoji,
-						laughStatus: laughEmoji,
-				  }
-				: msg;
-		});
-
-		setEmojiHistory(updatedArr);
+		const emojiTarget = e.currentTarget.id;
 
 		try {
-			const res = await axios.put(`${updateMessageRoute}/${id}/update`, {
+			if (emojiTarget === "content__like") {
+				likeEmoji = true;
+			} else if (emojiTarget === "content__laugh") {
+				laughEmoji = true;
+			}
+
+			await socket.emit("update_message", {
+				from: UserToken.user._id,
+				to: selectedContactId,
+				messageId: id,
 				likeStatus: likeEmoji,
 				laughStatus: laughEmoji,
 			});
 
-			res.status(200);
+			const updatedArr = emojiHistory.map(msg => {
+				return msg.messageId === id
+					? {
+							...msg,
+							likeStatus: likeEmoji,
+							laughStatus: laughEmoji,
+					  }
+					: msg;
+			});
+
+			setEmojiHistory(updatedArr);
+
+			await axios.put(`${updateMessageRoute}/${id}/update`, {
+				likeStatus: likeEmoji,
+				laughStatus: laughEmoji,
+			});
 		} catch (err) {
 			console.error(err);
 		}
@@ -58,11 +57,11 @@ export default function Emoji({
 
 	return (
 		<>
-			<div className='container_chat__emojis_dropdown'>
-				<div className='emojis_dropdown__content'>
+			<div className='flex gap-1'>
+				{(!sender || likeEmoji) && (
 					<button
 						aria-label='like message button'
-						className='content__like btn--emoji'
+						id='content__like'
 						onClick={e => addEmoji(e)}
 					>
 						{likeEmoji ? (
@@ -71,9 +70,11 @@ export default function Emoji({
 							<AiOutlineHeart color='white' size={24} />
 						)}
 					</button>
+				)}
+				{(!sender || laughEmoji) && (
 					<button
 						aria-label='laugh message button'
-						className='content__laugh btn--emoji'
+						id='content__laugh'
 						onClick={e => addEmoji(e)}
 					>
 						{laughEmoji ? (
@@ -82,7 +83,7 @@ export default function Emoji({
 							<FaGrinSquint color='grey' size={24} />
 						)}
 					</button>
-				</div>
+				)}
 			</div>
 		</>
 	);

@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600&family=Poppins:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        @apply box-border
+    }
+
+	body {
+		@apply font-body text-center bg-gray-900 m-0;
+	}
+}
+
+@layer components {
+	.contact-card {
+		@apply bg-stone-50 w-min_func mx-auto p-2 flex gap-2 justify-center items-center rounded-lg shadow-lg border-solid border-2 hover:border-headings-purple focus:border-headings-purple transition-all;
+	}
+
+	.contact-card-selected {
+		@apply bg-headings-purple text-stone-50 transition-colors;
+	}
+
+	.chat-feed {
+		@apply flex flex-col grow-[2] basis-96 m-2 min-h-full overflow-auto rounded-xl;
+	}
+
+	.btn-primary {
+		@apply py-2 px-4 rounded-full shadow-lg bg-gray-200 hover:bg-stone-50 transition-colors;
+	}
+
+	.btn-secondary {
+		@apply font-display text-xs uppercase text-white tracking-wider md:text-base py-2 px-4 mb-4 rounded-full hover:shadow hover:bg-gray-200 hover:text-black transition-all;
+	}
+}
+
+@layer utilities {
+	.min-width-custom {
+		width: min(275px, 80%);
+	}
+
+	.bg-glass {
+		background-color: rgba(255, 255, 255, 0.25);
+		backdrop-filter: blur(10px);
+	}
+
+    .bg-glass-purple {
+		@apply bg-headings-purple backdrop-blur
+	}
+}

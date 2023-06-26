@@ -2,12 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Avatar } from "../../components";
 import { contactRoute, deleteMessagesRoute } from "../../utils/apiRoutes";
-import "../../App.css";
-import "../register/register.css";
+import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import io from "socket.io-client";
-// const socket = io.connect("http://localhost:8080");
-const socket = io.connect("https://socket-chat-node.onrender.com");
+const socket = io.connect("http://localhost:8080");
+// const socket = io.connect("https://socket-chat-node.onrender.com");
 
 function Profile() {
 	let location = useLocation();
@@ -45,7 +44,7 @@ function Profile() {
 
 	// Modal Logic
 	const closeModal = e => {
-		if (e.target.className !== "btn--yes" && e.target.className !== "btn") {
+		if (e.target.id !== "modal_btn") {
 			dialog.close();
 			setDisplayDeleteModal(prevDeleteModal => !prevDeleteModal);
 		}
@@ -67,19 +66,45 @@ function Profile() {
 	/* eslint-enable react-hooks/exhaustive-deps */
 
 	return (
-		<div className='container'>
-			<h2>Profile</h2>
-			<div className='bio'>
-				<p>{location.state.username}</p>
-				<p>{location.state.email}</p>
-				{location.state.isAvatarImageSet && (
-					<img
-						src={newAvatar || location.state.avatarImage}
-						alt='current avatar'
-					/>
-				)}
+		<div className='text-white px-2'>
+			<h2 className='font-display font-semibold text-4xl uppercase my-[10vh]'>
+				Profile
+			</h2>
+			<div className='bg-stone-50 text-black min-h-[300px] w-[90%] max-w-2xl mx-auto my-5 md:py-3 flex flex-col justify-center items-center rounded-lg'>
+				<div className='bg-gray-200 w-[90%] max-w-lg m-3 p-4 md:p-6 flex flex-col items-start gap-1 rounded-lg shadow-md'>
+					{location.state.isAvatarImageSet && (
+						<img
+							src={newAvatar || location.state.avatarImage}
+							alt='current avatar'
+							className='h-24 w-24 mb-4 self-center rounded-full ring-2 ring-headings-purple'
+						/>
+					)}
+					<p>
+						{" "}
+						<span className='uppercase'>name</span> : {location.state.username}
+					</p>
+					<p className='mb-2'>
+						<span className='uppercase'>email</span> : {location.state.email}
+					</p>
+				</div>
 
-				<button onClick={settingsToggle}>Change Avatar</button>
+				<div className='w-[90%] max-w-lg mb-3 p-4 md:p-6 flex flex-wrap justify-center items-center gap-4'>
+					<button
+						className=' btn-primary border-solid border-2 hover:border-headings-purple focus:border-headings-purple transition-all'
+						onClick={settingsToggle}
+					>
+						Change Avatar
+					</button>
+					<button
+						id='modal_btn'
+						className='btn-primary border-solid border-2 hover:border-headings-purple focus:border-headings-purple transition-all'
+						onClick={() => {
+							setDisplayDeleteModal(prevDeleteModal => !prevDeleteModal);
+						}}
+					>
+						Delete Account
+					</button>
+				</div>
 			</div>
 
 			{displaySettings && (
@@ -88,30 +113,23 @@ function Profile() {
 					setSelectedAvatar={setNewAvatar}
 					currentUser={token}
 					setCurrentUser={setToken}
+					setShowAvatars={setDisplaySettings}
 				/>
 			)}
 
-			<button
-				className='btn'
-				onClick={() =>
-					setDisplayDeleteModal(prevDeleteModal => !prevDeleteModal)
-				}
-			>
-				Delete Account
-			</button>
-
-			<dialog ref={ref} className='modal' aria-modal='true' role='alertdialog'>
-				<h3>Are you sure you wish to delete your account?</h3>
-				<button className='btn--no'>no</button>
-				<button onClick={deleteUser} className='btn--yes'>
+			<dialog ref={ref} className=' text-lg p-3 shadow-xl border-solid border-4 border-headings-purple rounded-md ' aria-modal='true' role='alertdialog'>
+				<h3 className='mb-3' >Are you sure you wish to delete your account ?</h3>
+				<button className='btn-primary mx-3 rounded-md border-solid border-2 hover:border-green-500 focus:border-green-500'>no</button>
+				<button className='btn-primary mx-3 rounded-md border-solid border-2 hover:border-red-500 focus:border-red-500' onClick={deleteUser}>
 					Yes
 				</button>
 			</dialog>
 
-			<div>
-				<span>Go to </span>
-				<Link to='/'>Chat</Link>
-			</div>
+			<button className='btn-secondary'>
+				<Link to='/'>Go to Chat</Link>
+			</button>
+
+			<ToastContainer />
 		</div>
 	);
 }
