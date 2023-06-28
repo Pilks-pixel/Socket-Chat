@@ -74,12 +74,14 @@ export default function ChatInput(props) {
 	}, [displayGifs]);
 
 	const gifMenu = gifArray.map(gif => {
+		console.log(gif.images);
+
 		return (
 			<button key={gif.keyId} onClick={e => selectGif(e)}>
 				<img
 					id={gif.id}
 					className='w-min rounded shadow-lg'
-					alt='GIF'
+					alt={`GIF - ${gif.title}`}
 					src={gif.images.fixed_height_small.url}
 				/>
 			</button>
@@ -94,10 +96,10 @@ export default function ChatInput(props) {
 	const selectGif = e => {
 		e.preventDefault();
 		let gifId = gifArray.filter(g => g.id === e.target.id);
-		console.log(e.target);
 		props.setUserData({
 			...props.userData,
-			gif: gifId[0].images.looping.mp4,
+			// gif: gifId[0].images.looping.mp4,
+			gif: gifId[0].images.downsized.url
 		});
 		setdisplayGifs(prevGifs => !prevGifs);
 	};
@@ -130,9 +132,11 @@ export default function ChatInput(props) {
 				</div>
 
 				{obj.gif && (
-					<video controls className='max-w-full mb-3'>
-						<source src={obj.gif} type='video/mp4' />
-					</video>
+					<img src={obj.gif} alt="selected gif" className='max-w-full mb-3'/>
+					
+					// <video controls className='max-w-full mb-3'>
+					// 	<source src={obj.gif} type='video/mp4' />
+					// </video>
 				)}
 				<p className='mb-3'>{obj.message}</p>
 			</div>
@@ -142,17 +146,16 @@ export default function ChatInput(props) {
 	useEffect(() => {
 		messagesFeed.length ? setMessagesLoaded(true) : setMessagesLoaded(false);
 		if (messagesLoaded) {
-			messageEnd.current.scrollIntoView(false, {
+			messageEnd.current.scrollIntoView(true, {
 				behavior: "smooth",
-				block: "end",
 			});
 		}
 	}, [messagesFeed]);
 	/* eslint-enable react-hooks/exhaustive-deps */
 
 	return (
-		<div className='text-white bg-hero-pattern chat-feed order-2 relative h-[500px] flex flex-col justify-between overflow-auto'>
-			<div className='pt-2 px-2 flex flex-col gap-2'>
+		<div className='text-white bg-hero-pattern chat-feed order-2 relative h-[600px] flex flex-col justify-between overflow-auto'>
+			<div className='pt-2 px-2 flex flex-col justify-end gap-2'>
 				{messagesLoaded ? (
 					messagesFeed
 				) : (

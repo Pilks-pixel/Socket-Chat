@@ -5,8 +5,8 @@ import { contactRoute, deleteMessagesRoute } from "../../utils/apiRoutes";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import io from "socket.io-client";
-// const socket = io.connect("http://localhost:8080");
-const socket = io.connect("https://socket-chat-node.onrender.com");
+const socket = io.connect("http://localhost:8080");
+// const socket = io.connect("https://socket-chat-node.onrender.com");
 
 function Profile() {
 	let location = useLocation();
