@@ -3,6 +3,11 @@ import { React, useState, useEffect, useRef } from "react";
 import { Emoji } from ".";
 import { randomInt } from "../utils/notifications";
 import { FaPaperPlane } from "react-icons/fa";
+import { Virtuoso } from "react-virtuoso";
+
+import { VariableSizeList } from "react-window";
+
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function ChatInput(props) {
 	const { _id } = props.contact;
@@ -11,6 +16,8 @@ export default function ChatInput(props) {
 	const [gifArray, setGifArray] = useState([]);
 	const [displayGifs, setdisplayGifs] = useState(false);
 	const [gifData, setGifData] = useState([]);
+	const containerRef = useRef(null);
+	// const [hasMore, setHasMore] = useState(true);
 
 	// Create Message
 	const handleInput = e => {
@@ -74,8 +81,6 @@ export default function ChatInput(props) {
 	}, [displayGifs]);
 
 	const gifMenu = gifArray.map(gif => {
-		console.log(gif.images);
-
 		return (
 			<button key={gif.keyId} onClick={e => selectGif(e)}>
 				<img
@@ -99,21 +104,21 @@ export default function ChatInput(props) {
 		props.setUserData({
 			...props.userData,
 			// gif: gifId[0].images.looping.mp4,
-			gif: gifId[0].images.downsized.url
+			gif: gifId[0].images.downsized.url,
 		});
 		setdisplayGifs(prevGifs => !prevGifs);
 	};
 
 	// Display Message History & Emoji For Selected Contact
-	const messagesFeed = props.messageHistory.map((obj, index) => {
+	const messagesFeed = props.messageHistory.map(obj => {
 		return (
-			<div
+			<li
 				className={
 					obj.fromSender
 						? "  bg-glass-purple min-width-custom p-1.5 mb-4 rounded-md self-end"
 						: "  bg-glass min-width-custom p-1.5 mb-4 rounded-md self-start"
 				}
-				key={index}
+				key={obj.messageId}
 			>
 				<div className='flex justify-between mb-2'>
 					<span>{obj.timeStamp}</span>
@@ -132,38 +137,62 @@ export default function ChatInput(props) {
 				</div>
 
 				{obj.gif && (
-					<img src={obj.gif} alt="selected gif" className='max-w-full mb-3'/>
-					
-					// <video controls className='max-w-full mb-3'>
-					// 	<source src={obj.gif} type='video/mp4' />
-					// </video>
+					<img src={obj.gif} alt='selected gif' className='max-w-full mb-3' />
 				)}
 				<p className='mb-3'>{obj.message}</p>
-			</div>
+			</li>
 		);
 	});
 
-	useEffect(() => {
-		messagesFeed.length ? setMessagesLoaded(true) : setMessagesLoaded(false);
-		if (messagesLoaded) {
-			messageEnd.current.scrollIntoView(true, {
-				behavior: "smooth",
-			});
-		}
-	}, [messagesFeed]);
-	/* eslint-enable react-hooks/exhaustive-deps */
+	// console.log(messagesFeed)
 
+	// useEffect(() => {
+	// 	messagesFeed.length ? setMessagesLoaded(true) : setMessagesLoaded(false);
+	// 	if (messagesLoaded) {
+	// 		messageEnd.current.scrollIntoView(true, {
+	// 			behavior: "smooth",
+	// 		});
+	// 	}
+	// }, [messagesFeed]);
+	/* eslint-enable react-hooks/exhaustive-deps */
+console.log(props.messageHistory)
 	return (
-		<div className='text-white bg-hero-pattern chat-feed order-2 relative h-[600px] flex flex-col justify-between overflow-auto'>
-			<div className='pt-2 px-2 flex flex-col justify-end gap-2'>
-				{messagesLoaded ? (
-					messagesFeed
-				) : (
-					<h2 className='font-display text-3xl font-semibold m-3'>
-						Let's chat!
-					</h2>
+		<div
+			ref={containerRef}
+			id='scrollableDiv'
+			className='text-white bg-hero-pattern chat-feed order-2 relative flex flex-col h-[600px] overflow-auto'
+		>
+			<>
+				<Virtuoso
+					data={props.messageHistory}
+					initialTopMostItemIndex={messagesFeed.length - 1} // Scroll to bottom initially
+					followOutput="smooth" // Scroll smoothly when new items are added
+					className="h-[600px] overflow-auto"
+					itemContent={(index, message) => {
+						
+						return (
+						<div>
+							{message.gif && (
+					<img src={message.gif} alt='selected gif' className='max-w-full mb-3' />
 				)}
-			</div>
+							<p className='mb-3'>{message.message}</p>
+						</div>
+					);}
+				}
+					//   style={{ height: "100%" }}
+				/>
+
+				{/* {messagesLoaded ? (
+						messagesFeed
+					) : (
+						<h2 className='font-display text-3xl font-semibold m-3'>
+							Let's chat!
+						</h2>
+					)} */}
+		{/* {messagesFeed} */}
+
+		</>
+			
 
 			<form
 				ref={messageEnd}
