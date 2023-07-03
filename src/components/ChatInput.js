@@ -105,13 +105,15 @@ export default function ChatInput(props) {
 		setdisplayGifs(prevGifs => !prevGifs);
 	};
 
-	// Display Message History & Emoji For Selected Contact
+	// Display Message History & Emoji For Selected Contact With Windowing
 	useEffect(() => {
-		props.messageHistory.length ? setMessagesLoaded(true) : setMessagesLoaded(false);
+		props.messageHistory.length
+			? setMessagesLoaded(true)
+			: setMessagesLoaded(false);
 		if (messagesLoaded) {
 			messageEnd.current.scrollIntoView(true, {
 				behavior: "smooth",
-				block: "end"
+				block: "end",
 			});
 		}
 	}, [props.messageHistory]);
@@ -119,62 +121,62 @@ export default function ChatInput(props) {
 	return (
 		<div
 			id='scrollableDiv'
-			className='text-white bg-hero-pattern chat-feed order-2 relative flex flex-col h-[600px] overflow-auto'
+			className='text-white bg-hero-pattern chat-feed order-2 p-2 relative flex flex-col h-[600px] overflow-scroll'
 			ref={containerRef}
 		>
-
-{messagesLoaded ? (
-					<ViewportList items={props.messageHistory} viewportRef={containerRef}
+			{messagesLoaded ? (
+				<ViewportList 
+					items={props.messageHistory}
+					viewportRef={containerRef}
 					initialIndex={messagesLoaded && props.messageHistory.length - 1}
 					margin-bottom={20}
-					
-					>
-						{(item, index) => {
-							return (
-								<div
-									className={
-										item.fromSender
-											? "bg-glass-purple min-width-custom p-1.5 mx-2 mb-4 rounded-md self-end"
-											: "bg-glass min-width-custom p-1.5 mx-2 mb-4 rounded-md self-start"
-									}
-									key={item.messageId}
-								>
-									<div className='flex justify-between mb-2'>
-										<span>{item.timeStamp}</span>
-										<Emoji
-											id={item.messageId}
-											likeEmoji={item.likeStatus}
-											laughEmoji={item.laughStatus}
-											socket={props.socket}
-											selectedContactId={_id}
-											UserToken={props.token}
-											emojiHistory={props.messageHistory}
-											setEmojiHistory={props.setMessageHistory}
-											sender={item.fromSender}
-										/>
-									</div>
-									{item.gif && (
-										<img
-											src={item.gif}
-											alt='selected gif'
-											className='max-w-full mb-3'
-										/>
-									)}
-									<p className='mb-3'>{item.message}</p>
+				>
+					{(item, index) => {
+						return (
+							<div
+								className={
+									item.fromSender
+										? "bg-glass-purple min-width-custom p-1.5 mx-2 mb-4 rounded-md self-end"
+										: "bg-glass min-width-custom p-1.5 mx-2 mb-4 rounded-md self-start"
+								}
+								key={item.messageId}
+							>
+								<div className='flex justify-between mb-2'>
+									<span>{item.timeStamp}</span>
+									<Emoji
+										id={item.messageId}
+										likeEmoji={item.likeStatus}
+										laughEmoji={item.laughStatus}
+										socket={props.socket}
+										selectedContactId={_id}
+										UserToken={props.token}
+										emojiHistory={props.messageHistory}
+										setEmojiHistory={props.setMessageHistory}
+										sender={item.fromSender}
+									/>
 								</div>
-							);
-						}}
-					</ViewportList>
-				) : (
-					<h3 className='font-display text-3xl font-semibold m-3'>
-						Let's chat!
-					</h3>
-				)}
-			
+								{item.gif && (
+									<img
+										src={item.gif}
+										alt='selected gif'
+										className='max-w-full mb-3 mx-[auto]'
+									/>
+								)}
+								<p className='mb-3'>{item.message}</p>
+							</div>
+						);
+					}}
+				</ViewportList>
+			) : (
+				<h3 className='font-display text-3xl font-semibold m-3'>Let's chat!</h3>
+			)}
+
+			<div  
+			ref={messageEnd}
+			className="w-full h-4 mt-16"></div>
 
 			<form
-				ref={messageEnd}
-				className='text-black bg-white w-[70%] mt-6 mb-2 p-2 rounded-md self-center flex gap-3 justify-end items-center transition-colors'
+				className='text-black bg-white w-[70%] mt-6 mb-2 p-2 rounded-md sticky bottom-4 self-center justify-self-end flex gap-3 justify-end items-center transition-colors'
 			>
 				<input
 					className='w-full rounded-md'

@@ -6,7 +6,6 @@ import {useAuth} from './useAuth'
 function PrivateRoute(props) {
 
     let isAuth = useAuth()
-    console.log(isAuth)
   return (
     isAuth? <Outlet /> : <Navigate to="/login"/>
 
