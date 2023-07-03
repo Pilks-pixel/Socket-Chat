@@ -13,7 +13,7 @@ export default function ChatInput(props) {
 	const [displayGifs, setdisplayGifs] = useState(false);
 	const [gifData, setGifData] = useState([]);
 	const containerRef = useRef(null);
-	// const [hasMore, setHasMore] = useState(true);
+
 
 	// Create Message
 	const handleInput = e => {
