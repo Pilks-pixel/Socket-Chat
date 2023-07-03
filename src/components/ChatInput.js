@@ -3,11 +3,7 @@ import { React, useState, useEffect, useRef } from "react";
 import { Emoji } from ".";
 import { randomInt } from "../utils/notifications";
 import { FaPaperPlane } from "react-icons/fa";
-import { Virtuoso } from "react-virtuoso";
-
-import { VariableSizeList } from "react-window";
-
-import InfiniteScroll from "react-infinite-scroll-component";
+import { ViewportList } from "react-viewport-list";
 
 export default function ChatInput(props) {
 	const { _id } = props.contact;
@@ -110,93 +106,75 @@ export default function ChatInput(props) {
 	};
 
 	// Display Message History & Emoji For Selected Contact
-	const messagesFeed = props.messageHistory.map(obj => {
-		return (
-			<li
-				className={
-					obj.fromSender
-						? "  bg-glass-purple min-width-custom p-1.5 mb-4 rounded-md self-end"
-						: "  bg-glass min-width-custom p-1.5 mb-4 rounded-md self-start"
-				}
-				key={obj.messageId}
-			>
-				<div className='flex justify-between mb-2'>
-					<span>{obj.timeStamp}</span>
-
-					<Emoji
-						id={obj.messageId}
-						likeEmoji={obj.likeStatus}
-						laughEmoji={obj.laughStatus}
-						socket={props.socket}
-						selectedContactId={_id}
-						UserToken={props.token}
-						emojiHistory={props.messageHistory}
-						setEmojiHistory={props.setMessageHistory}
-						sender={obj.fromSender}
-					/>
-				</div>
-
-				{obj.gif && (
-					<img src={obj.gif} alt='selected gif' className='max-w-full mb-3' />
-				)}
-				<p className='mb-3'>{obj.message}</p>
-			</li>
-		);
-	});
-
-	// console.log(messagesFeed)
-
-	// useEffect(() => {
-	// 	messagesFeed.length ? setMessagesLoaded(true) : setMessagesLoaded(false);
-	// 	if (messagesLoaded) {
-	// 		messageEnd.current.scrollIntoView(true, {
-	// 			behavior: "smooth",
-	// 		});
-	// 	}
-	// }, [messagesFeed]);
+	useEffect(() => {
+		props.messageHistory.length ? setMessagesLoaded(true) : setMessagesLoaded(false);
+		if (messagesLoaded) {
+			messageEnd.current.scrollIntoView(true, {
+				behavior: "smooth",
+				block: "end"
+			});
+		}
+	}, [props.messageHistory]);
 	/* eslint-enable react-hooks/exhaustive-deps */
-console.log(props.messageHistory)
 	return (
 		<div
-			ref={containerRef}
 			id='scrollableDiv'
 			className='text-white bg-hero-pattern chat-feed order-2 relative flex flex-col h-[600px] overflow-auto'
+			ref={containerRef}
 		>
-			<>
-				<Virtuoso
-					data={props.messageHistory}
-					initialTopMostItemIndex={messagesFeed.length - 1} // Scroll to bottom initially
-					followOutput="smooth" // Scroll smoothly when new items are added
-					className="h-[600px] overflow-auto"
-					itemContent={(index, message) => {
-						
-						return (
-						<div>
-							{message.gif && (
-					<img src={message.gif} alt='selected gif' className='max-w-full mb-3' />
+
+{messagesLoaded ? (
+					<ViewportList items={props.messageHistory} viewportRef={containerRef}
+					initialIndex={messagesLoaded && props.messageHistory.length - 1}
+					margin-bottom={20}
+					
+					>
+						{(item, index) => {
+							return (
+								<div
+									className={
+										item.fromSender
+											? "bg-glass-purple min-width-custom p-1.5 mx-2 mb-4 rounded-md self-end"
+											: "bg-glass min-width-custom p-1.5 mx-2 mb-4 rounded-md self-start"
+									}
+									key={item.messageId}
+								>
+									<div className='flex justify-between mb-2'>
+										<span>{item.timeStamp}</span>
+										<Emoji
+											id={item.messageId}
+											likeEmoji={item.likeStatus}
+											laughEmoji={item.laughStatus}
+											socket={props.socket}
+											selectedContactId={_id}
+											UserToken={props.token}
+											emojiHistory={props.messageHistory}
+											setEmojiHistory={props.setMessageHistory}
+											sender={item.fromSender}
+										/>
+									</div>
+									{item.gif && (
+										<img
+											src={item.gif}
+											alt='selected gif'
+											className='max-w-full mb-3'
+										/>
+									)}
+									<p className='mb-3'>{item.message}</p>
+								</div>
+							);
+						}}
+					</ViewportList>
+				) : (
+					<h3 className='font-display text-3xl font-semibold m-3'>
+						Let's chat!
+					</h3>
 				)}
-							<p className='mb-3'>{message.message}</p>
-						</div>
-					);}
-				}
-					//   style={{ height: "100%" }}
-				/>
-
-				{/* {messagesLoaded ? (
-						messagesFeed
-					) : (
-						<h2 className='font-display text-3xl font-semibold m-3'>
-							Let's chat!
-						</h2>
-					)} */}
-		{/* {messagesFeed} */}
-
-		</>
 			
 
 			<form
 				ref={messageEnd}
-				className=' text-black bg-white w-[70%] mb-2 p-2 rounded-md self-center flex gap-3 justify-end items-center transition-colors'
+				className='text-black bg-white w-[70%] mt-6 mb-2 p-2 rounded-md self-center flex gap-3 justify-end items-center transition-colors'
 			>
 				<input
 					className='w-full rounded-md'
