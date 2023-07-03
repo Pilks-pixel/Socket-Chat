@@ -2,7 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Avatar } from "../../components";
 import { contactRoute, deleteMessagesRoute } from "../../utils/apiRoutes";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import { toastWarning } from "../../utils/notifications";
 import axios from "axios";
 import io from "socket.io-client";
 // const socket = io.connect("http://localhost:8080");
@@ -29,12 +30,11 @@ function Profile() {
 				axios.delete(`${deleteMessagesRoute}/${token.user._id}/delete`),
 				axios.delete(`${contactRoute}/${token.user._id}/delete`),
 			]);
-			console.log(userRes.data);
-			console.log(messagesRes.data);
-
+		
 			if (messagesRes && userRes) {
 				localStorage.removeItem("jwtToken");
 				socket.emit("remove_user", token.user._id);
+				toast.warn(userRes.data.msg, toastWarning)
 				goTo("/login");
 			}
 		} catch (err) {

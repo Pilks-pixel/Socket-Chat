@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+# Pixel chat
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![project page screenshot](./src/assets/screenshot.png)
 
-## Available Scripts
+## Deployment
 
-In the project directory, you can run:
+:rocket: **Deployed** with Netlify at [pixel-chat](https://pilks-pixel-chat.netlify.app/)
 
-### `npm start`
+## About
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Pixel Chat allows users to share instant messages and gifs with others that can interact with their posts.
+In this project, the frontend uses **React** and **Tailwind** CSS. While **Socket IO** handles web socket functionality for messaging.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The backend API was built in **Node.js** giving full **C.R.U.D** functionality and utilizes **MongoDB**, **bcrypt** and **JWT** for storage, encryption and authentication of user credentials, as well as authorization for login.
 
-### `npm test`
+## Instructions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Clone down to local machine, `npm install` and `cd socket-chat`
 
-### `npm run build`
+`npm run start` to run the client.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The backend API can be found at [https://github.com/Pilks-pixel/Socket-Chat-Backend](https://github.com/Pilks-pixel/Socket-Chat-Backend).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser, when both client and server are running.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Wins
 
-### `npm run eject`
+-[x] Instant messaging and updates through **Socket IO**.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+-[x] Login / registration form with input **validation**.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+-[x] Accessibility consideration and Mobile first design made using **Tailwind CSS**.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+-[x] User authorization enabled with **React router** &amp; private route components using local storage and **JWT**.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+-[x] **Regex** abusive content filter.
 
-## Learn More
+## Significant code
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```javascript
+// Creates array of random gif objects and uses recursion to ensure there are no duplicates. Then renders each as a selectable / keyboard accessible image. 
+useEffect(() => {
+		if (gifData.length > 0) {
+			const randomGifs = [];
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+			function addGif() {
+				let seed = gifData[randomInt(gifData.length)];
 
-### Code Splitting
+				if (!randomGifs.includes(seed)) {
+					return randomGifs.push(seed);
+				} else {
+					addGif();
+				}
+			}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+			for (let i = 0; i < 6; i++) {
+				addGif();
+			}
 
-### Analyzing the Bundle Size
+			setGifArray(randomGifs);
+		}
+	}, [displayGifs]);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+	const gifMenu = gifArray.map(gif => {
+		return (
+			<button key={gif.keyId} onClick={e => selectGif(e)}>
+				<img
+					id={gif.id}
+					className='w-min rounded shadow-lg'
+					alt={`GIF - ${gif.title}`}
+					src={gif.images.fixed_height_small.url}
+				/>
+			</button>
+		);
+	});
+```
