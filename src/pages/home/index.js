@@ -169,21 +169,23 @@ function Home() {
 
 	return (
 		<>
-			<h1 className='font-display font-semibold text-4xl tracking-wider uppercase text-white mt-[10vh] mb-[14vh]'>
-				Pixel Chat
-			</h1>
-			<div className='relative w-[90%] max-w-4xl mx-auto'>
-				{user._id && (
-					<button
-						className='absolute bottom-0 left-0 btn-secondary'
-						onClick={() => goTo("/profile", { state: user })}
-					>
-						Go to Profile
-					</button>
-				)}
-			</div>
+			<header>
+				<h1 className='font-display font-semibold text-4xl tracking-wider uppercase text-white mt-[10vh] mb-[14vh]'>
+					Pixel Chat
+				</h1>
+				<div className='relative w-[90%] max-w-4xl mx-auto'>
+					{user._id && (
+						<button
+							className='absolute bottom-0 left-0 btn-secondary'
+							onClick={() => goTo("/profile", { state: user })}
+						>
+							Go to Profile
+						</button>
+					)}
+				</div>
+			</header>
 
-			<div className='bg-stone-50 w-[90%] max-w-4xl mx-auto my-5 p-[2%] flex flex-wrap rounded-lg'>
+			<main className='bg-stone-50 w-[90%] max-w-4xl mx-auto my-5 p-[2%] flex flex-wrap rounded-lg'>
 				<Contacts
 					showContact={handleChatChange}
 					contact={selectedContact}
@@ -218,7 +220,7 @@ function Home() {
 						)}
 					</div>
 				)}
-			</div>
+			</main>
 			<div className='relative w-[90%] max-w-4xl mx-auto mb-10 p-[4%]'>
 				<SignOut socket={socket} currentUser={currentUserToken} />
 			</div>

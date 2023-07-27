@@ -99,8 +99,7 @@ export default function ChatInput(props) {
 		let gifId = gifArray.filter(g => g.id === e.target.id);
 		props.setUserData({
 			...props.userData,
-			// gif: gifId[0].images.looping.mp4,
-			gif: gifId[0].images.downsized.url,
+			gif: {image: gifId[0].images.downsized.url, title: gifId[0].title},
 		});
 		setdisplayGifs(prevGifs => !prevGifs);
 	};
@@ -111,6 +110,7 @@ export default function ChatInput(props) {
 			? setMessagesLoaded(true)
 			: setMessagesLoaded(false);
 		if (messagesLoaded) {
+			console.log(props.messageHistory)
 			messageEnd.current.scrollIntoView(true, {
 				behavior: "smooth",
 				block: "end",
@@ -118,8 +118,9 @@ export default function ChatInput(props) {
 		}
 	}, [props.messageHistory]);
 	/* eslint-enable react-hooks/exhaustive-deps */
+
 	return (
-		<div
+		<section
 			id='scrollableDiv'
 			className='text-white bg-hero-pattern chat-feed order-2 p-2 relative flex flex-col h-[600px] overflow-scroll'
 			ref={containerRef}
@@ -142,7 +143,7 @@ export default function ChatInput(props) {
 								key={item.messageId}
 							>
 								<div className='flex justify-between mb-2'>
-									<span>{item.timeStamp}</span>
+									<time>{item.timeStamp}</time>
 									<Emoji
 										id={item.messageId}
 										likeEmoji={item.likeStatus}
@@ -157,8 +158,8 @@ export default function ChatInput(props) {
 								</div>
 								{item.gif && (
 									<img
-										src={item.gif}
-										alt='selected gif'
+										src={item.gif.image}
+										alt={`${item.gif.title}`}
 										className='max-w-full mb-3 mx-[auto]'
 									/>
 								)}
@@ -189,7 +190,7 @@ export default function ChatInput(props) {
 				<div className='self-end'>
 					<button
 						className={`font-extrabold uppercase tracking-wide p-1 border-2 rounded-full hover:bg-gray-200 hover:text-white ${
-							props.userData.gif.length > 0 && "text-green-400 border-green-400"
+							Object.keys(props.userData.gif).length > 0 && "text-green-400 border-green-400"
 						}`}
 						onClick={gifToggle}
 					>
@@ -215,6 +216,6 @@ export default function ChatInput(props) {
 					</button>
 				)}
 			</form>
-		</div>
+		</section>
 	);
 }

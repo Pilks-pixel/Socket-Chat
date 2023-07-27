@@ -125,8 +125,8 @@ function Profile() {
 				</button>
 			</dialog>
 
-			<button className='btn-secondary'>
-				<Link to='/'>Go to Chat</Link>
+			<button className='btn-secondary' onClick={() => goTo("/")} role="link">
+				Go to Chat
 			</button>
 
 			<ToastContainer />
