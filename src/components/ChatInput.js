@@ -110,7 +110,6 @@ export default function ChatInput(props) {
 			? setMessagesLoaded(true)
 			: setMessagesLoaded(false);
 		if (messagesLoaded) {
-			console.log(props.messageHistory)
 			messageEnd.current.scrollIntoView(true, {
 				behavior: "smooth",
 				block: "end",
