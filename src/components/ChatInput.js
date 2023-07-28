@@ -3,6 +3,7 @@ import { React, useState, useEffect, useRef } from "react";
 import { Emoji } from ".";
 import { randomInt } from "../utils/notifications";
 import { FaPaperPlane } from "react-icons/fa";
+import { ViewportList } from "react-viewport-list";
 
 export default function ChatInput(props) {
 	const { _id } = props.contact;
@@ -11,6 +12,8 @@ export default function ChatInput(props) {
 	const [gifArray, setGifArray] = useState([]);
 	const [displayGifs, setdisplayGifs] = useState(false);
 	const [gifData, setGifData] = useState([]);
+	const containerRef = useRef(null);
+
 
 	// Create Message
 	const handleInput = e => {
@@ -79,7 +82,7 @@ export default function ChatInput(props) {
 				<img
 					id={gif.id}
 					className='w-min rounded shadow-lg'
-					alt='GIF'
+					alt={`GIF - ${gif.title}`}
 					src={gif.images.fixed_height_small.url}
 				/>
 			</button>
@@ -94,77 +97,86 @@ export default function ChatInput(props) {
 	const selectGif = e => {
 		e.preventDefault();
 		let gifId = gifArray.filter(g => g.id === e.target.id);
-		console.log(e.target);
 		props.setUserData({
 			...props.userData,
-			gif: gifId[0].images.looping.mp4,
+			gif: {image: gifId[0].images.downsized.url, title: gifId[0].title},
 		});
 		setdisplayGifs(prevGifs => !prevGifs);
 	};
 
-	// Display Message History & Emoji For Selected Contact
-	const messagesFeed = props.messageHistory.map((obj, index) => {
-		return (
-			<div
-				className={
-					obj.fromSender
-						? "  bg-glass-purple min-width-custom p-1.5 mb-4 rounded-md self-end"
-						: "  bg-glass min-width-custom p-1.5 mb-4 rounded-md self-start"
-				}
-				key={index}
-			>
-				<div className='flex justify-between mb-2'>
-					<span>{obj.timeStamp}</span>
-
-					<Emoji
-						id={obj.messageId}
-						likeEmoji={obj.likeStatus}
-						laughEmoji={obj.laughStatus}
-						socket={props.socket}
-						selectedContactId={_id}
-						UserToken={props.token}
-						emojiHistory={props.messageHistory}
-						setEmojiHistory={props.setMessageHistory}
-						sender={obj.fromSender}
-					/>
-				</div>
-
-				{obj.gif && (
-					<video controls className='max-w-full mb-3'>
-						<source src={obj.gif} type='video/mp4' />
-					</video>
-				)}
-				<p className='mb-3'>{obj.message}</p>
-			</div>
-		);
-	});
-
+	// Display Message History & Emoji For Selected Contact With Windowing
 	useEffect(() => {
-		messagesFeed.length ? setMessagesLoaded(true) : setMessagesLoaded(false);
+		props.messageHistory.length
+			? setMessagesLoaded(true)
+			: setMessagesLoaded(false);
 		if (messagesLoaded) {
-			messageEnd.current.scrollIntoView(false, {
+			messageEnd.current.scrollIntoView(true, {
 				behavior: "smooth",
 				block: "end",
 			});
 		}
-	}, [messagesFeed]);
+	}, [props.messageHistory]);
 	/* eslint-enable react-hooks/exhaustive-deps */
 
 	return (
-		<div className='text-white bg-hero-pattern chat-feed order-2 relative h-[500px] flex flex-col justify-between overflow-auto'>
-			<div className='pt-2 px-2 flex flex-col gap-2'>
-				{messagesLoaded ? (
-					messagesFeed
-				) : (
-					<h2 className='font-display text-3xl font-semibold m-3'>
-						Let's chat!
-					</h2>
-				)}
-			</div>
+		<section
+			id='scrollableDiv'
+			className='text-white bg-hero-pattern chat-feed order-2 p-2 relative flex flex-col h-[600px] overflow-scroll'
+			ref={containerRef}
+		>
+			{messagesLoaded ? (
+				<ViewportList 
+					items={props.messageHistory}
+					viewportRef={containerRef}
+					initialIndex={messagesLoaded && props.messageHistory.length - 1}
+					margin-bottom={20}
+				>
+					{(item, index) => {
+						return (
+							<div
+								className={
+									item.fromSender
+										? "bg-glass-purple min-width-custom p-1.5 mx-2 mb-4 rounded-md self-end"
+										: "bg-glass min-width-custom p-1.5 mx-2 mb-4 rounded-md self-start"
+								}
+								key={item.messageId}
+							>
+								<div className='flex justify-between mb-2'>
+									<time>{item.timeStamp}</time>
+									<Emoji
+										id={item.messageId}
+										likeEmoji={item.likeStatus}
+										laughEmoji={item.laughStatus}
+										socket={props.socket}
+										selectedContactId={_id}
+										UserToken={props.token}
+										emojiHistory={props.messageHistory}
+										setEmojiHistory={props.setMessageHistory}
+										sender={item.fromSender}
+									/>
+								</div>
+								{item.gif && (
+									<img
+										src={item.gif.image}
+										alt={`${item.gif.title}`}
+										className='max-w-full mb-3 mx-[auto]'
+									/>
+								)}
+								<p className='mb-3'>{item.message}</p>
+							</div>
+						);
+					}}
+				</ViewportList>
+			) : (
+				<h3 className='font-display text-3xl font-semibold m-3'>Let's chat!</h3>
+			)}
+
+			<div  
+			ref={messageEnd}
+			className="w-full h-4 mt-16"></div>
 
 			<form
-				ref={messageEnd}
-				className=' text-black bg-white w-[70%] mb-2 p-2 rounded-md self-center flex gap-3 justify-end items-center transition-colors'
+				className='text-black bg-white w-[70%] mt-6 mb-2 p-2 rounded-md absolute bottom-4 self-center justify-self-end flex gap-3 justify-end items-center transition-colors'
 			>
 				<input
 					className='w-full rounded-md'
@@ -177,7 +189,7 @@ export default function ChatInput(props) {
 				<div className='self-end'>
 					<button
 						className={`font-extrabold uppercase tracking-wide p-1 border-2 rounded-full hover:bg-gray-200 hover:text-white ${
-							props.userData.gif.length > 0 && "text-green-400 border-green-400"
+							Object.keys(props.userData.gif).length > 0 && "text-green-400 border-green-400"
 						}`}
 						onClick={gifToggle}
 					>
@@ -203,6 +215,6 @@ export default function ChatInput(props) {
 					</button>
 				)}
 			</form>
-		</div>
+		</section>
 	);
 }
