@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Avatar } from "../../components";
 import { contactRoute, deleteMessagesRoute } from "../../utils/apiRoutes";
 import { ToastContainer, toast } from "react-toastify";
