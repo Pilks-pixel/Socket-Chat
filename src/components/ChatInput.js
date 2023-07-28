@@ -176,7 +176,7 @@ export default function ChatInput(props) {
 			className="w-full h-4 mt-16"></div>
 
 			<form
-				className='text-black bg-white w-[70%] mt-6 mb-2 p-2 rounded-md sticky bottom-4 self-center justify-self-end flex gap-3 justify-end items-center transition-colors'
+				className='text-black bg-white w-[70%] mt-6 mb-2 p-2 rounded-md absolute bottom-4 self-center justify-self-end flex gap-3 justify-end items-center transition-colors'
 			>
 				<input
 					className='w-full rounded-md'
