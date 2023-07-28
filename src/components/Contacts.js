@@ -42,18 +42,18 @@ function Contacts(props) {
 	});
 
 	return (
-		<div className='font-medium text-sm capitalize grow basis m-2 order-2'>
-			<div className='bg-gray-200 p-4 mb-5 max-h-[500px] flex justify-center items-center gap-2 rounded-lg overflow-auto'>
+		<aside className='font-medium text-sm capitalize grow basis m-2 order-2'>
+			<section className='bg-gray-200 p-4 mb-5 max-h-[500px] flex justify-center items-center gap-2 rounded-lg overflow-auto'>
 				{isAvatarImageSet && (
-					<img className=' w-16 h-16 bg-inherit' src={avatarImage} alt='avatar' />
+					<img className=' w-16 h-16 bg-inherit' src={avatarImage} alt={`${username} avatar`} />
 				)}
-				<h4>{username}</h4>
-			</div>
-			<div className="bg-gray-200 rounded-xl p-2 flex flex-col gap-y-2.5 place-content-center">
+				<h2>{username}</h2>
+			</section>
+			<section className="bg-gray-200 rounded-xl p-2 flex flex-col gap-y-2.5 place-content-center">
 			<h3 className="font-display text-lg m-3">Contacts</h3>
 			{showAllContacts}
-			</div>
-		</div>
+			</section>
+		</aside>
 	);
 }
 

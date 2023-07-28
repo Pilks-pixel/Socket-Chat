@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Avatar } from "../../components";
 import { contactRoute, deleteMessagesRoute } from "../../utils/apiRoutes";
 import { ToastContainer, toast } from "react-toastify";
@@ -125,8 +125,8 @@ function Profile() {
 				</button>
 			</dialog>
 
-			<button className='btn-secondary'>
-				<Link to='/'>Go to Chat</Link>
+			<button className='btn-secondary' onClick={() => goTo("/")} role="link">
+				Go to Chat
 			</button>
 
 			<ToastContainer />
